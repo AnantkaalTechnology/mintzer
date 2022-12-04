@@ -11,20 +11,19 @@ import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
 
 class OrderDetailPage extends StatefulWidget {
-  const OrderDetailPage(
-      {Key? key,
-      required this.productImage,
-      required this.productTitle,
-      required this.productOfferTitle,
-      required this.productOfferText,
-      required this.productYouSpend,
-      required this.productTotalEarn,
-      required this.productCashback,
-      required this.productTotalReceive,
-      required this.productLink,
-      required this.productDealId,
-      required this.dealId,
-      required this.orderQuantity})
+  const OrderDetailPage({Key? key,
+    required this.productImage,
+    required this.productTitle,
+    required this.productOfferTitle,
+    required this.productOfferText,
+    required this.productYouSpend,
+    required this.productTotalEarn,
+    required this.productCashback,
+    required this.productTotalReceive,
+    required this.productLink,
+    required this.productDealId,
+    required this.dealId,
+    required this.orderQuantity, this.orderPage = 0})
       : super(key: key);
 
   @override
@@ -42,6 +41,7 @@ class OrderDetailPage extends StatefulWidget {
   final String productDealId;
   final String dealId;
   final String orderQuantity;
+  final int orderPage;
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
@@ -63,6 +63,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ),
               child: Column(
                 children: [
+
                   ///----------key note card----------
                   Card(
                     semanticContainer: true,
@@ -152,1028 +153,1071 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   //   height: 300.h,
                   //   child:
                   // ),
-                  Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    elevation: 3,
-                    color: colorWhite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: constants.borderRadius,
-                      side: const BorderSide(width: 0.4, color: colorDark),
-                    ),
-                    child: Container(
-                      // color: colorAccent3,
 
-                      child: Padding(
-                        padding: const EdgeInsets.all(constants.defaultPadding),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              // crossAxisAlignment: CrossAxisAlignment.start,
+                    Visibility(
+                      visible: widget.orderPage == 0 ? false : true,
+                      child: Card(
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        elevation: 3,
+                        color: colorWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: constants.borderRadius,
+                          side: const BorderSide(width: 0.4, color: colorDark),
+                        ),
+                        child: Container(
+                          // color: colorAccent3,
+
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                                constants.defaultPadding),
+                            child: Column(
                               children: [
-                                ///--------1
                                 Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceAround,
+                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              color: steps > 0
-                                                  ? colorDark
-                                                  : colorSubHeadingText,
-                                              border: Border.all(
-                                                color: steps > 0
-                                                    ? colorDark
-                                                    : colorSubHeadingText,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      constants.radius))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                constants.defaultPadding / 3),
-                                            child: Image.asset(
-                                              'images/accepted.png',
-                                              color: steps > 0
-                                                  ? colorWhite
-                                                  : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        Text("accepted",
-                                            style: textStyle.smallText.copyWith(
-                                                color: colorHeadingText,
-                                                fontSize: 9.sp)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
 
-                                ///----------2
-                                Row(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              color: steps > 1
-                                                  ? colorDark
-                                                  : colorSubHeadingText,
-                                              border: Border.all(
-                                                color: steps > 1
-                                                    ? colorDark
-                                                    : colorSubHeadingText,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      constants.radius))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                constants.defaultPadding / 3),
-                                            child: Image.asset(
-                                              'images/order.png',
-                                              color: steps > 1
-                                                  ? colorWhite
-                                                  : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        Text("ordered",
-                                            style: textStyle.smallText.copyWith(
-                                                color: colorHeadingText,
-                                                fontSize: 9.sp)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                ///----------3
-                                Row(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              color: steps > 2
-                                                  ? colorDark
-                                                  : colorSubHeadingText,
-                                              border: Border.all(
-                                                color: steps > 2
-                                                    ? colorDark
-                                                    : colorSubHeadingText,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      constants.radius))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                constants.defaultPadding / 3),
-                                            child: Image.asset(
-                                              'images/shipped.png',
-                                              color: steps > 2
-                                                  ? colorWhite
-                                                  : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        Text("shipped",
-                                            style: textStyle.smallText.copyWith(
-                                                color: colorHeadingText,
-                                                fontSize: 9.sp)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                ///----------4
-                                Row(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                              color: steps > 3
-                                                  ? colorDark
-                                                  : colorSubHeadingText,
-                                              border: Border.all(
-                                                  color: steps > 3
-                                                      ? colorDark
-                                                      : colorSubHeadingText),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      constants.radius))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                constants.defaultPadding / 3),
-                                            child: Image.asset(
-                                              'images/delivered.png',
-                                              color: steps > 3
-                                                  ? colorWhite
-                                                  : Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        Text("delivered",
-                                            style: textStyle.smallText.copyWith(
-                                                color: colorHeadingText,
-                                                fontSize: 9.sp)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                ///----------5
-                                Column(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                          color: steps > 4
-                                              ? colorDark
-                                              : colorSubHeadingText,
-                                          border: Border.all(
-                                            color: steps > 4
-                                                ? colorDark
-                                                : colorSubHeadingText,
-                                          ),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                  constants.radius))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(
-                                            constants.defaultPadding / 3),
-                                        child: Image.asset(
-                                          'images/payment2.png',
-                                          color: steps > 4
-                                              ? colorWhite
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    Text("payment",
-                                        style: textStyle.smallText.copyWith(
-                                            color: colorHeadingText,
-                                            fontSize: 9.sp)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const Divider(
-                              thickness: 0.5,
-                              color: colorHeadingText,
-                              height: constants.defaultPadding,
-                            ),
-
-                            ///----------payment-------
-                            Visibility(
-                              visible: steps == 4 ? true : false,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Image.asset(
-                                      'images/done.png',
-                                      height: 90.h,
-                                      color: colorSuccess,
-                                      width: 90.w,
-                                    ),
-                                    Visibility(
-                                      visible: false,
-                                      child: Text(
-                                        "Payment is panding",
-                                        style: textStyle.heading
-                                            .copyWith(color: colorWarning),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: true,
-                                      child: Text(
-                                        "Payment Done",
-                                        style: textStyle.heading
-                                            .copyWith(color: colorSuccess),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            ///-------delivered--------
-                            Visibility(
-                              visible: steps == 3 ? true : false,
-                              child: Container(
-                                child: Column(
-                                  children: [
+                                    ///--------1
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "mintraz order id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Text(
-                                          "mint4907466670",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Flipkart order #",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "mint4907466670",
-                                              style: textStyle.smallText
-                                                  .copyWith(
-                                                      color: colorHeadingText),
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  constants.defaultPadding / 3,
-                                            ),
-                                            Text(
-                                              "Edit",
-                                              style: textStyle
-                                                  .smallTextColorDark
-                                                  .copyWith(
-                                                      color: colorHeadingText,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Tracking id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "mint4907466670",
-                                              style: textStyle.smallText
-                                                  .copyWith(
-                                                      color: colorHeadingText),
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  constants.defaultPadding / 3,
-                                            ),
-                                            Text(
-                                              "Edit",
-                                              style: textStyle
-                                                  .smallTextColorDark
-                                                  .copyWith(
-                                                      color: colorHeadingText,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Delivery Support",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Text(
-                                          "Status",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText,
-                                              decoration:
-                                                  TextDecoration.underline),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: NewButton(
-                                            context: context,
-                                            buttonText: "Save",
-                                            height: 36.h,
-                                            textStyle: textStyle.button
-                                                .copyWith(fontSize: 14.sp),
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  constants.defaultPadding / 2,
-                                            ),
-                                            function: () {
-                                              customPrint("steps : $steps");
-                                              setState(() {
-                                                steps++;
-                                              });
-                                            },
-                                          ),
-                                        ),
-
-                                        ///order now button--------------
-                                        // Expanded(
-                                        //   child: Column(
-                                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                                        //     children: [
-                                        //       Text(
-                                        //         "not yet ordered?",
-                                        //         style: textStyle.smallText,
-                                        //       ),
-                                        //       Text(
-                                        //         "Order Now>",
-                                        //         style: textStyle.smallTextColorDark
-                                        //             .copyWith(color: colorDark),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        // ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "ordered cancelled?",
-                                                style: textStyle.smallText,
-                                              ),
-                                              Text(
-                                                "Mark cancelled",
-                                                style: textStyle
-                                                    .smallTextColorDark
-                                                    .copyWith(
-                                                        color: colorDark,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            ///--------shipped--------
-                            Visibility(
-                              visible: steps == 2 ? true : false,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "mintraz order id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Text(
-                                          "mint4907466670",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Flipkart order #",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "mint4907466670",
-                                              style: textStyle.smallText
-                                                  .copyWith(
-                                                      color: colorHeadingText),
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  constants.defaultPadding / 3,
-                                            ),
-                                            Text(
-                                              "Edit",
-                                              style: textStyle
-                                                  .smallTextColorDark
-                                                  .copyWith(
-                                                      color: colorHeadingText,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Tracking id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "mint4907466670",
-                                              style: textStyle.smallText
-                                                  .copyWith(
-                                                      color: colorHeadingText),
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  constants.defaultPadding / 3,
-                                            ),
-                                            Text(
-                                              "Edit",
-                                              style: textStyle
-                                                  .smallTextColorDark
-                                                  .copyWith(
-                                                      color: colorHeadingText,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Delivery Support",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        // Text(
-                                        //   "Select courier patner",
-                                        //   style: textStyle.smallText.copyWith(
-                                        //       color: colorHeadingText,
-                                        //       decoration: TextDecoration.underline),
-                                        // ),
-                                      ],
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: SizedBox(
-                                        height: 46.h,
-                                        width: 200,
-                                        child: TextFormField(
-                                          textAlignVertical:
-                                              TextAlignVertical.center,
-                                          keyboardType: TextInputType.number,
-                                          textCapitalization:
-                                              TextCapitalization.sentences,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: " Enter your OTP/PIN",
-                                            hintStyle: textStyle.subHeading
-                                                .copyWith(
-                                                    color: colorSubHeadingText),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: NewButton(
-                                            context: context,
-                                            buttonText: "Save",
-                                            height: 36.h,
-                                            textStyle: textStyle.button
-                                                .copyWith(fontSize: 14.sp),
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  constants.defaultPadding / 2,
-                                            ),
-                                            function: () {
-                                              setState(() {
-                                                steps++;
-                                              });
-                                              customPrint("steps : $steps");
-                                            },
-                                          ),
-                                        ),
-
-                                        ///order now button--------------
-                                        // Expanded(
-                                        //   child: Column(
-                                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                                        //     children: [
-                                        //       Text(
-                                        //         "not yet ordered?",
-                                        //         style: textStyle.smallText,
-                                        //       ),
-                                        //       Text(
-                                        //         "Order Now",
-                                        //         style: textStyle.smallTextColorDark
-                                        //             .copyWith(color: colorDark),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        // ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "ordered cancelled?",
-                                                style: textStyle.smallText,
-                                              ),
-                                              Text(
-                                                "Mark cancelled",
-                                                style: textStyle
-                                                    .smallTextColorDark
-                                                    .copyWith(
-                                                        color: colorDark,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            ///---------ordered-------
-                            Visibility(
-                              visible: steps == 1 ? true : false,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "mintraz order id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Text(
-                                          "mint4907466670",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                      ],
-                                    ),
-                                    const Divider(
-                                      thickness: 0.1,
-                                      color: colorHeadingText,
-                                      height: constants.defaultPadding / 2,
-                                    ),
-                                    // SizedBox(
-                                    //   height: constants.defaultPadding,
-                                    // ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Flipkart order #",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "mint4907466670",
-                                              style: textStyle.smallText
-                                                  .copyWith(
-                                                      color: colorHeadingText),
-                                            ),
-                                            SizedBox(
-                                              width:
-                                                  constants.defaultPadding / 3,
-                                            ),
-                                            Text(
-                                              "Edit",
-                                              style: textStyle
-                                                  .smallTextColorDark
-                                                  .copyWith(
-                                                      color: colorHeadingText,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const Divider(
-                                      thickness: 0.1,
-                                      color: colorHeadingText,
-                                      height: constants.defaultPadding / 2,
-                                    ),
-                                    // SizedBox(
-                                    //   height: constants.defaultPadding,
-                                    // ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Tracking id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Text(
-                                          "Select courier patner",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText,
-                                              decoration:
-                                                  TextDecoration.underline),
-                                        ),
-                                      ],
-                                    ),
-                                    const Divider(
-                                      thickness: 0.1,
-                                      color: colorHeadingText,
-                                      height: constants.defaultPadding / 2,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: SizedBox(
-                                        height: 46.h,
-                                        width: 200,
-                                        child: TextFormField(
-                                          textAlignVertical:
-                                              TextAlignVertical.center,
-                                          keyboardType: TextInputType.number,
-                                          textCapitalization:
-                                              TextCapitalization.sentences,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "99999-999999-999999",
-                                            hintStyle: textStyle.subHeading
-                                                .copyWith(
-                                                    color: colorSubHeadingText),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: NewButton(
-                                            context: context,
-                                            buttonText: "Save",
-                                            height: 36.h,
-                                            textStyle: textStyle.button
-                                                .copyWith(fontSize: 14.sp),
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  constants.defaultPadding / 2,
-                                            ),
-                                            function: () {
-                                              setState(() {
-                                                steps++;
-                                              });
-
-                                              customPrint("steps : $steps");
-                                            },
-                                          ),
-                                        ),
-
-                                        ///order now button--------------
-                                        // Expanded(
-                                        //   child: Column(
-                                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                                        //     children: [
-                                        //       Text(
-                                        //         "not yet ordered?",
-                                        //         style: textStyle.smallText,
-                                        //       ),
-                                        //       Text(
-                                        //         "Order Now",
-                                        //         style: textStyle.smallTextColorDark
-                                        //             .copyWith(color: colorDark),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        // ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "ordered cancelled?",
-                                                style: textStyle.smallText,
-                                              ),
-                                              Text(
-                                                "Mark cancelled",
-                                                style: textStyle
-                                                    .smallTextColorDark
-                                                    .copyWith(
-                                                        color: colorDark,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            ///-------accepted page-----------
-                            Visibility(
-                              visible: steps == 0 ? true : false,
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "mintraz order id",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                        Text(
-                                          "mint4907466670",
-                                          style: textStyle.smallText.copyWith(
-                                              color: colorHeadingText),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .center,
                                       children: [
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .end,
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  color: steps > 0
+                                                      ? colorDark
+                                                      : colorSubHeadingText,
+                                                  border: Border.all(
+                                                    color: steps > 0
+                                                        ? colorDark
+                                                        : colorSubHeadingText,
+                                                  ),
+                                                  borderRadius: BorderRadius
+                                                      .all(
+                                                      Radius.circular(
+                                                          constants.radius))),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    constants.defaultPadding /
+                                                        3),
+                                                child: Image.asset(
+                                                  'images/accepted.png',
+                                                  color: steps > 0
+                                                      ? colorWhite
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Text("accepted",
+                                                style: textStyle.smallText
+                                                    .copyWith(
+                                                    color: colorHeadingText,
+                                                    fontSize: 9.sp)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+
+                                    ///----------2
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  color: steps > 1
+                                                      ? colorDark
+                                                      : colorSubHeadingText,
+                                                  border: Border.all(
+                                                    color: steps > 1
+                                                        ? colorDark
+                                                        : colorSubHeadingText,
+                                                  ),
+                                                  borderRadius: BorderRadius
+                                                      .all(
+                                                      Radius.circular(
+                                                          constants.radius))),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    constants.defaultPadding /
+                                                        3),
+                                                child: Image.asset(
+                                                  'images/order.png',
+                                                  color: steps > 1
+                                                      ? colorWhite
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Text("ordered",
+                                                style: textStyle.smallText
+                                                    .copyWith(
+                                                    color: colorHeadingText,
+                                                    fontSize: 9.sp)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+
+                                    ///----------3
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  color: steps > 2
+                                                      ? colorDark
+                                                      : colorSubHeadingText,
+                                                  border: Border.all(
+                                                    color: steps > 2
+                                                        ? colorDark
+                                                        : colorSubHeadingText,
+                                                  ),
+                                                  borderRadius: BorderRadius
+                                                      .all(
+                                                      Radius.circular(
+                                                          constants.radius))),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    constants.defaultPadding /
+                                                        3),
+                                                child: Image.asset(
+                                                  'images/shipped.png',
+                                                  color: steps > 2
+                                                      ? colorWhite
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Text("shipped",
+                                                style: textStyle.smallText
+                                                    .copyWith(
+                                                    color: colorHeadingText,
+                                                    fontSize: 9.sp)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+
+                                    ///----------4
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              height: 30,
+                                              width: 30,
+                                              decoration: BoxDecoration(
+                                                  color: steps > 3
+                                                      ? colorDark
+                                                      : colorSubHeadingText,
+                                                  border: Border.all(
+                                                      color: steps > 3
+                                                          ? colorDark
+                                                          : colorSubHeadingText),
+                                                  borderRadius: BorderRadius
+                                                      .all(
+                                                      Radius.circular(
+                                                          constants.radius))),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    constants.defaultPadding /
+                                                        3),
+                                                child: Image.asset(
+                                                  'images/delivered.png',
+                                                  color: steps > 3
+                                                      ? colorWhite
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            Text("delivered",
+                                                style: textStyle.smallText
+                                                    .copyWith(
+                                                    color: colorHeadingText,
+                                                    fontSize: 9.sp)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+
+                                    ///----------5
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                              color: steps > 4
+                                                  ? colorDark
+                                                  : colorSubHeadingText,
+                                              border: Border.all(
+                                                color: steps > 4
+                                                    ? colorDark
+                                                    : colorSubHeadingText,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                      constants.radius))),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(
+                                                constants.defaultPadding / 3),
+                                            child: Image.asset(
+                                              'images/payment2.png',
+                                              color: steps > 4
+                                                  ? colorWhite
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        Text("payment",
+                                            style: textStyle.smallText.copyWith(
+                                                color: colorHeadingText,
+                                                fontSize: 9.sp)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Divider(
+                                  thickness: 0.5,
+                                  color: colorHeadingText,
+                                  height: constants.defaultPadding,
+                                ),
+
+                                ///----------payment-------
+                                Visibility(
+                                  visible: steps == 4 ? true : false,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          'images/done.png',
+                                          height: 90.h,
+                                          color: colorSuccess,
+                                          width: 90.w,
+                                        ),
+                                        Visibility(
+                                          visible: false,
+                                          child: Text(
+                                            "Payment is panding",
+                                            style: textStyle.heading
+                                                .copyWith(color: colorWarning),
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: true,
+                                          child: Text(
+                                            "Payment Done",
+                                            style: textStyle.heading
+                                                .copyWith(color: colorSuccess),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                ///-------delivered--------
+                                Visibility(
+                                  visible: steps == 3 ? true : false,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "mintraz order id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Text(
+                                              "mint4907466670",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "Flipkart order #",
                                               style: textStyle.smallText
                                                   .copyWith(
-                                                      color: colorHeadingText),
+                                                  color: colorHeadingText),
                                             ),
-                                            SizedBox(
-                                              height: 46.h,
-                                              width: 200,
-                                              child: TextFormField(
-                                                textAlignVertical:
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "mint4907466670",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorHeadingText),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                  constants.defaultPadding / 3,
+                                                ),
+                                                Text(
+                                                  "Edit",
+                                                  style: textStyle
+                                                      .smallTextColorDark
+                                                      .copyWith(
+                                                      color: colorHeadingText,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Tracking id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "mint4907466670",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorHeadingText),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                  constants.defaultPadding / 3,
+                                                ),
+                                                Text(
+                                                  "Edit",
+                                                  style: textStyle
+                                                      .smallTextColorDark
+                                                      .copyWith(
+                                                      color: colorHeadingText,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Delivery Support",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Text(
+                                              "Status",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText,
+                                                  decoration:
+                                                  TextDecoration.underline),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: NewButton(
+                                                context: context,
+                                                buttonText: "Save",
+                                                height: 36.h,
+                                                textStyle: textStyle.button
+                                                    .copyWith(fontSize: 14.sp),
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                  constants.defaultPadding / 2,
+                                                ),
+                                                function: () {
+                                                  customPrint("steps : $steps");
+                                                  setState(() {
+                                                    steps++;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+
+                                            ///order now button--------------
+                                            // Expanded(
+                                            //   child: Column(
+                                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                                            //     children: [
+                                            //       Text(
+                                            //         "not yet ordered?",
+                                            //         style: textStyle.smallText,
+                                            //       ),
+                                            //       Text(
+                                            //         "Order Now>",
+                                            //         style: textStyle.smallTextColorDark
+                                            //             .copyWith(color: colorDark),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "ordered cancelled?",
+                                                    style: textStyle.smallText,
+                                                  ),
+                                                  Text(
+                                                    "Mark cancelled",
+                                                    style: textStyle
+                                                        .smallTextColorDark
+                                                        .copyWith(
+                                                        color: colorDark,
+                                                        decoration:
+                                                        TextDecoration
+                                                            .underline),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                ///--------shipped--------
+                                Visibility(
+                                  visible: steps == 2 ? true : false,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "mintraz order id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Text(
+                                              "mint4907466670",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Flipkart order #",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "mint4907466670",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorHeadingText),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                  constants.defaultPadding / 3,
+                                                ),
+                                                Text(
+                                                  "Edit",
+                                                  style: textStyle
+                                                      .smallTextColorDark
+                                                      .copyWith(
+                                                      color: colorHeadingText,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Tracking id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "mint4907466670",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorHeadingText),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                  constants.defaultPadding / 3,
+                                                ),
+                                                Text(
+                                                  "Edit",
+                                                  style: textStyle
+                                                      .smallTextColorDark
+                                                      .copyWith(
+                                                      color: colorHeadingText,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Delivery Support",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            // Text(
+                                            //   "Select courier patner",
+                                            //   style: textStyle.smallText.copyWith(
+                                            //       color: colorHeadingText,
+                                            //       decoration: TextDecoration.underline),
+                                            // ),
+                                          ],
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: SizedBox(
+                                            height: 46.h,
+                                            width: 200,
+                                            child: TextFormField(
+                                              textAlignVertical:
+                                              TextAlignVertical.center,
+                                              keyboardType: TextInputType
+                                                  .number,
+                                              textCapitalization:
+                                              TextCapitalization.sentences,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: " Enter your OTP/PIN",
+                                                hintStyle: textStyle.subHeading
+                                                    .copyWith(
+                                                    color: colorSubHeadingText),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: NewButton(
+                                                context: context,
+                                                buttonText: "Save",
+                                                height: 36.h,
+                                                textStyle: textStyle.button
+                                                    .copyWith(fontSize: 14.sp),
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                  constants.defaultPadding / 2,
+                                                ),
+                                                function: () {
+                                                  setState(() {
+                                                    steps++;
+                                                  });
+                                                  customPrint("steps : $steps");
+                                                },
+                                              ),
+                                            ),
+
+                                            ///order now button--------------
+                                            // Expanded(
+                                            //   child: Column(
+                                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                                            //     children: [
+                                            //       Text(
+                                            //         "not yet ordered?",
+                                            //         style: textStyle.smallText,
+                                            //       ),
+                                            //       Text(
+                                            //         "Order Now",
+                                            //         style: textStyle.smallTextColorDark
+                                            //             .copyWith(color: colorDark),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "ordered cancelled?",
+                                                    style: textStyle.smallText,
+                                                  ),
+                                                  Text(
+                                                    "Mark cancelled",
+                                                    style: textStyle
+                                                        .smallTextColorDark
+                                                        .copyWith(
+                                                        color: colorDark,
+                                                        decoration:
+                                                        TextDecoration
+                                                            .underline),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                ///---------ordered-------
+                                Visibility(
+                                  visible: steps == 1 ? true : false,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "mintraz order id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Text(
+                                              "mint4907466670",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(
+                                          thickness: 0.1,
+                                          color: colorHeadingText,
+                                          height: constants.defaultPadding / 2,
+                                        ),
+                                        // SizedBox(
+                                        //   height: constants.defaultPadding,
+                                        // ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Flipkart order #",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "mint4907466670",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorHeadingText),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                  constants.defaultPadding / 3,
+                                                ),
+                                                Text(
+                                                  "Edit",
+                                                  style: textStyle
+                                                      .smallTextColorDark
+                                                      .copyWith(
+                                                      color: colorHeadingText,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(
+                                          thickness: 0.1,
+                                          color: colorHeadingText,
+                                          height: constants.defaultPadding / 2,
+                                        ),
+                                        // SizedBox(
+                                        //   height: constants.defaultPadding,
+                                        // ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Tracking id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Text(
+                                              "Select courier patner",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText,
+                                                  decoration:
+                                                  TextDecoration.underline),
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(
+                                          thickness: 0.1,
+                                          color: colorHeadingText,
+                                          height: constants.defaultPadding / 2,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: SizedBox(
+                                            height: 46.h,
+                                            width: 200,
+                                            child: TextFormField(
+                                              textAlignVertical:
+                                              TextAlignVertical.center,
+                                              keyboardType: TextInputType
+                                                  .number,
+                                              textCapitalization:
+                                              TextCapitalization.sentences,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: "99999-999999-999999",
+                                                hintStyle: textStyle.subHeading
+                                                    .copyWith(
+                                                    color: colorSubHeadingText),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: NewButton(
+                                                context: context,
+                                                buttonText: "Save",
+                                                height: 36.h,
+                                                textStyle: textStyle.button
+                                                    .copyWith(fontSize: 14.sp),
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                  constants.defaultPadding / 2,
+                                                ),
+                                                function: () {
+                                                  setState(() {
+                                                    steps++;
+                                                  });
+
+                                                  customPrint("steps : $steps");
+                                                },
+                                              ),
+                                            ),
+
+                                            ///order now button--------------
+                                            // Expanded(
+                                            //   child: Column(
+                                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                                            //     children: [
+                                            //       Text(
+                                            //         "not yet ordered?",
+                                            //         style: textStyle.smallText,
+                                            //       ),
+                                            //       Text(
+                                            //         "Order Now",
+                                            //         style: textStyle.smallTextColorDark
+                                            //             .copyWith(color: colorDark),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "ordered cancelled?",
+                                                    style: textStyle.smallText,
+                                                  ),
+                                                  Text(
+                                                    "Mark cancelled",
+                                                    style: textStyle
+                                                        .smallTextColorDark
+                                                        .copyWith(
+                                                        color: colorDark,
+                                                        decoration:
+                                                        TextDecoration
+                                                            .underline),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                ///-------accepted page-----------
+                                Visibility(
+                                  visible: steps == 0 ? true : false,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "mintraz order id",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                            Text(
+                                              "mint4907466670",
+                                              style: textStyle.smallText
+                                                  .copyWith(
+                                                  color: colorHeadingText),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Flipkart order #",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorHeadingText),
+                                                ),
+                                                SizedBox(
+                                                  height: 46.h,
+                                                  width: 200,
+                                                  child: TextFormField(
+                                                    textAlignVertical:
                                                     TextAlignVertical.center,
-                                                keyboardType:
+                                                    keyboardType:
                                                     TextInputType.number,
-                                                textCapitalization:
+                                                    textCapitalization:
                                                     TextCapitalization
                                                         .sentences,
-                                                decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: "999-999999-999999",
-                                                  hintStyle: textStyle
-                                                      .subHeading
-                                                      .copyWith(
+                                                    decoration: InputDecoration(
+                                                      border: InputBorder.none,
+                                                      hintText: "999-999999-999999",
+                                                      hintStyle: textStyle
+                                                          .subHeading
+                                                          .copyWith(
                                                           color:
-                                                              colorSubHeadingText),
+                                                          colorSubHeadingText),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            SizedBox(
-                                                height: 40,
-                                                width: 40,
-                                                child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    value: double.parse(
-                                                        flutterMapValue(0.0,
-                                                            1.0, 0, 59, sec)),
-                                                    valueColor:
+                                            Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    height: 40,
+                                                    width: 40,
+                                                    child: CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        value: double.parse(
+                                                            flutterMapValue(0.0,
+                                                                1.0, 0, 59,
+                                                                sec)),
+                                                        valueColor:
                                                         const AlwaysStoppedAnimation<
                                                             Color>(colorDark))),
-                                            Text(
-                                              "00:${addZero(sec)}",
-                                              style: textStyle.smallText
-                                                  .copyWith(color: colorDark),
+                                                Text(
+                                                  "00:${addZero(sec)}",
+                                                  style: textStyle.smallText
+                                                      .copyWith(
+                                                      color: colorDark),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: constants.defaultPadding,
+                                        ),
+
+                                        ///----------button
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: NewButton(
+                                                context: context,
+                                                buttonText: "Save",
+                                                height: 36.h,
+                                                textStyle: textStyle.button
+                                                    .copyWith(fontSize: 14.sp),
+                                                margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                  constants.defaultPadding / 2,
+                                                ),
+                                                function: () {
+                                                  setState(() {
+                                                    steps++;
+                                                  });
+
+                                                  customPrint("steps : $steps");
+                                                },
+                                              ),
+                                            ),
+
+                                            ///order now button--------------
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "not yet ordered?",
+                                                    style: textStyle.smallText,
+                                                  ),
+                                                  Text(
+                                                    "Order Now",
+                                                    style: textStyle
+                                                        .smallTextColorDark
+                                                        .copyWith(
+                                                        color: colorDark,
+                                                        decoration:
+                                                        TextDecoration
+                                                            .underline),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "ordered cancelled?",
+                                                    style: textStyle.smallText,
+                                                  ),
+                                                  Text(
+                                                    "Mark cancelled",
+                                                    style: textStyle
+                                                        .smallTextColorDark
+                                                        .copyWith(
+                                                        color: colorDark,
+                                                        decoration:
+                                                        TextDecoration
+                                                            .underline),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: constants.defaultPadding,
-                                    ),
-
-                                    ///----------button
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: NewButton(
-                                            context: context,
-                                            buttonText: "Save",
-                                            height: 36.h,
-                                            textStyle: textStyle.button
-                                                .copyWith(fontSize: 14.sp),
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal:
-                                                  constants.defaultPadding / 2,
-                                            ),
-                                            function: () {
-                                              setState(() {
-                                                steps++;
-                                              });
-
-                                              customPrint("steps : $steps");
-                                            },
-                                          ),
-                                        ),
-
-                                        ///order now button--------------
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "not yet ordered?",
-                                                style: textStyle.smallText,
-                                              ),
-                                              Text(
-                                                "Order Now",
-                                                style: textStyle
-                                                    .smallTextColorDark
-                                                    .copyWith(
-                                                        color: colorDark,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "ordered cancelled?",
-                                                style: textStyle.smallText,
-                                              ),
-                                              Text(
-                                                "Mark cancelled",
-                                                style: textStyle
-                                                    .smallTextColorDark
-                                                    .copyWith(
-                                                        color: colorDark,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
                   // Card(
                   //   semanticContainer: true,
@@ -1492,13 +1536,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       productImage: widget.productImage,
                                       productTitle: widget.productTitle,
                                       productOfferTitle:
-                                          widget.productOfferTitle,
+                                      widget.productOfferTitle,
                                       productOfferText: widget.productOfferText,
                                       productYouSpend: widget.productYouSpend,
                                       productTotalEarn: widget.productTotalEarn,
                                       productCashback: widget.productCashback,
                                       productTotalReceive:
-                                          widget.productTotalReceive,
+                                      widget.productTotalReceive,
                                       productLink: widget.productLink,
                                       productDealId: widget.productDealId,
                                       dealId: widget.dealId,
@@ -1740,6 +1784,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   "images/spend_amount.png",
                                   height: 30.h,
                                   width: 30.w,
+                                  color: colorError,
                                 ),
                                 Text(
                                   "Spend",
@@ -1775,7 +1820,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.asset(
-                                  "images/spend_amount.png",
+                                  "images/receive_amount.png",
                                   height: 30.h,
                                   width: 30.w,
                                 ),
@@ -1805,6 +1850,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           elevation: 3,
                           shape: RoundedRectangleBorder(
                             borderRadius: constants.borderRadius,
+                            side: BorderSide(
+                              color: colorDark1,
+                              width: 0,
+                            ),
                           ),
                           child: Container(
                             decoration: BoxDecoration(
@@ -1812,8 +1861,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
-                                  colorDark1,
-                                  colorDark,
+                                  colorDark511,
+                                  colorDark51,
 
                                 ],
                               ),
@@ -1828,6 +1877,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     "images/profit.png",
                                     height: 30.h,
                                     width: 30.w,
+
                                   ),
                                   Text(
                                     "Earn",
@@ -1869,7 +1919,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           ),
                           child: Padding(
                             padding:
-                                const EdgeInsets.all(constants.defaultPadding),
+                            const EdgeInsets.all(constants.defaultPadding),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -1877,6 +1927,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   "images/spend_amount.png",
                                   height: 30.h,
                                   width: 30.w,
+                                  color: colorError,
                                 ),
                                 Text(
                                   "You'll spend",
@@ -1902,16 +1953,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      CrossAxisAlignment.end,
                                       children: [
                                         Text(
-                                          "You'll spend",
+                                          "total price",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "$rupeeSign ${widget.productYouSpend}",
+                                          "$rupeeSign ${widget
+                                              .productYouSpend}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -1925,16 +1977,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      CrossAxisAlignment.end,
                                       children: [
                                         Text(
-                                          "You'll spend",
+                                          "discount ",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "$rupeeSign ${widget.productYouSpend}",
+                                          "$rupeeSign ${widget
+                                              .productYouSpend}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -1960,7 +2013,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           ),
                           child: Padding(
                             padding:
-                                const EdgeInsets.all(constants.defaultPadding),
+                            const EdgeInsets.all(constants.defaultPadding),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -1992,7 +2045,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                      CrossAxisAlignment.end,
                                       children: [
                                         Text(
                                           "spend",
@@ -2001,7 +2054,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "$rupeeSign ${widget.productYouSpend}",
+                                          "$rupeeSign ${widget
+                                              .productYouSpend}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -2015,7 +2069,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           "cash reward",
@@ -2024,7 +2078,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "$rupeeSign ${widget.productYouSpend}",
+                                          "$rupeeSign ${widget
+                                              .productYouSpend}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -2057,7 +2112,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         ),
                         child: Padding(
                           padding:
-                              const EdgeInsets.all(constants.defaultPadding),
+                          const EdgeInsets.all(constants.defaultPadding),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
@@ -2156,7 +2211,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                   ///----------secure order card-------------
                   Visibility(
-                    visible: true,
+                    visible: widget.orderPage==1 ? false : true,
                     child: Card(
                       semanticContainer: true,
                       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -2209,7 +2264,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                   ///-------------delivery details---------
                   Visibility(
-                    visible: false,
+                    visible: widget.orderPage== 0 ? false : true,
                     child: Card(
                       semanticContainer: true,
                       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -2348,7 +2403,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           Text(
             title == " " ? " " : "$title",
             style:
-                textStyle.smallTextColorDark.copyWith(color: colorHeadingText),
+            textStyle.smallTextColorDark.copyWith(color: colorHeadingText),
           ),
           Expanded(
             child: Text(
@@ -2377,7 +2432,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           child: Text(
             value,
             style:
-                textStyle.smallTextColorDark.copyWith(color: colorHeadingText),
+            textStyle.smallTextColorDark.copyWith(color: colorHeadingText),
           ),
         ),
       ],

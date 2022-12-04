@@ -82,6 +82,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                             productDealId: HomeApi.dealerId[index],
                             dealId: HomeApi.dealId[index],
                             orderQuantity: HomeApi.dealOrderQuantity[index],
+                            orderPage: 1,
                           ));
                     },
                     child: Card(

@@ -109,7 +109,11 @@ flutter:
     - images/support.png
     - images/account.png
     - images/rightarrow.png
+    - images/rightarrow1.png
+    - images/rightarrow2.png
     - images/leftarrow.png
+    - images/lefttarrow1.png
+    - images/leftarrow2.png
     - images/receive_amount.png
     - images/spend_amount.png
     - images/home.png

@@ -171,6 +171,7 @@ class _OrderPageState extends State<OrderPage> {
                                 autoPlay: false,
                                 autoPlayCurve: Curves.fastOutSlowIn,
                                 pauseAutoPlayOnTouch: true,
+                                reverse: false,
                               ),
                               items: [
                                 SizedBox(
@@ -411,84 +412,112 @@ class _OrderPageState extends State<OrderPage> {
                         Container(
                           color: colorWhite,
                           height: 30.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          width: double.infinity,
+                          child: Stack(
                             children: [
-                              InkWell(
-                                onTap: (){
-                                  _controller.nextPage();
-                                  // _controller.previousPage();
-                                  setState(() {
-                                    if(_current < 1){
-                                      _current = 3;
-                                    }
-                                    _current--;
-
-                                  });
-                                },
+                              Center(
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: imgList.asMap().entries.map((entry) {
+                                    return GestureDetector(
+                                      onTap: () =>
+                                          _controller.animateToPage(entry.key),
+                                      child: Container(
+                                        width: 8.w,
+                                        height: 8.h,
+                                        margin: EdgeInsets.symmetric(
+                                            vertical:
+                                                constants.defaultPadding / 3,
+                                            horizontal:
+                                                constants.defaultPadding / 3),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: (Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black)
+                                                .withOpacity(_current == entry.key
+                                                    ? 0.9
+                                                    : 0.4)),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:constants.defaultPadding,right: constants.defaultPadding ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(
-                                          constants.defaultPadding / 1.2),
-                                      child: Image.asset("images/leftarrow.png"),
+
+                                    Visibility(
+                                      visible: _current == 0 ? false : true,
+                                      child: InkWell(
+                                        onTap: () {
+                                          _controller.previousPage();
+                                          // _controller.previousPage();
+                                          setState(() {
+                                            // if (_current < 0) {
+                                            //   _current = 2;
+                                            // }
+                                            _current--;
+                                          });
+                                        },
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(
+                                                    constants.defaultPadding /2),
+                                                child:
+                                                Image.asset("images/leftarrow2.png",color: Colors.black,),
+                                              ),
+                                              Text(
+                                                getTextRight(),
+                                                style: textStyle.smallText
+                                                    .copyWith(color: Colors.black),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    Text("detail",style: textStyle.smallText.copyWith(color: Colors.black),),
+                                    Visibility(
+                                      visible: _current == 2 ? false : true,
+                                      child: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            customPrint("_current :: $_current");
+                                            _controller.nextPage();
+                                            _current++;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              getText(),
+                                              style: textStyle.smallText
+                                                  .copyWith(color: Colors.black),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(
+                                                  constants.defaultPadding /2),
+                                              child:
+                                              Image.asset("images/rightarrow2.png",color: Colors.black,),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+
                                   ],
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: imgList.asMap().entries.map((entry) {
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        _controller.animateToPage(entry.key),
-                                    child: Container(
-                                      width: 8.w,
-                                      height: 8.h,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical:
-                                              constants.defaultPadding / 3,
-                                          horizontal:
-                                              constants.defaultPadding / 3),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: (Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.dark
-                                                  ? Colors.white
-                                                  : Colors.black)
-                                              .withOpacity(_current == entry.key
-                                                  ? 0.9
-                                                  : 0.4)),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-
-                              InkWell(
-                                onTap: (){
-                                  setState(() {
-                                    customPrint("_current :: $_current");
-                                    if(_current >3 || _current < 1){
-                                      _current = 1;
-                                    }
-                                    _current++;
-                                  });
 
 
-                                },
-                                child: Row(
-                                  children: [
-                                    Text("detail",style: textStyle.smallText.copyWith(color: Colors.black),),
-                                    Padding(
-                                      padding: const EdgeInsets.all(
-                                          constants.defaultPadding/1.2),
-                                      child: Image.asset("images/rightarrow.png"),
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ],
                           ),
                         )
@@ -561,8 +590,8 @@ class _OrderPageState extends State<OrderPage> {
               ? Container()
               : Image.asset(
                   "images/copyicon.png",
-                  height: 8.h,
-                  width: 8.w,
+                  height: 12.h,
+                  width: 12.w,
                 ),
         ],
       ),
@@ -638,5 +667,24 @@ class _OrderPageState extends State<OrderPage> {
         );
       },
     );
+  }
+
+  String getText() {
+    if(_current == 0)
+      {
+        return "User detail";
+      }else if (_current == 1){
+      return "GST detail";
+    }
+    return "";
+  }
+  String getTextRight() {
+    if(_current == 2)
+      {
+        return "User detail";
+      }else if (_current == 1){
+      return "Product detail";
+    }
+    return "";
   }
 }

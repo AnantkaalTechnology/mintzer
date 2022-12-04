@@ -141,27 +141,26 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: constants.defaultPadding*9),
+                    padding: const EdgeInsets.only(
+                        bottom: constants.defaultPadding * 9),
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           nextPage(context, const SupportPage());
                         },
                         child: Container(
                           height: 40.h,
                           width: 45.w,
-
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  colorDark,
-                                  colorDark1,
-
-                                ],
-                              ),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                colorDark50,
+                                colorDark501,
+                              ],
+                            ),
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(constants.radius),
                                 topLeft: Radius.circular(constants.radius)),
@@ -173,7 +172,8 @@ class _HomePageState extends State<HomePage> {
                             // ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(constants.defaultPadding/2),
+                            padding: const EdgeInsets.all(
+                                constants.defaultPadding / 2),
                             child: Image.asset(
                               "images/support.png",
                               color: colorWhite,
@@ -340,6 +340,7 @@ class _HomePageState extends State<HomePage> {
                                       dealId: HomeApi.dealId[index],
                                       orderQuantity:
                                           HomeApi.dealOrderQuantity[index],
+                                      orderPage: 0,
                                     ));
                               },
                               child: Column(

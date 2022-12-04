@@ -225,6 +225,7 @@ class _DealPageState extends State<DealPage> {
                                       dealId: HomeApi.dealId[index],
                                       orderQuantity:
                                           HomeApi.dealOrderQuantity[index],
+                                      orderPage: 0,
                                     ));
                               },
                               child: Stack(
