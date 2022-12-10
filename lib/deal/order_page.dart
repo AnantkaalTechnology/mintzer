@@ -23,7 +23,7 @@ class OrderPage extends StatefulWidget {
       required this.productLink,
       required this.productDealId,
       required this.dealId,
-      required this.orderQuantity})
+      required this.orderQuantity,  this.orderNow = false})
       : super(key: key);
 
   @override
@@ -41,6 +41,7 @@ class OrderPage extends StatefulWidget {
   final String productDealId;
   final String dealId;
   final String orderQuantity;
+  final bool orderNow;
 }
 
 class _OrderPageState extends State<OrderPage> {
@@ -63,9 +64,13 @@ class _OrderPageState extends State<OrderPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    HomeApi.createOrder(widget.dealId, context).then((value) {
-      setState(() {});
-    });
+    if(widget.orderNow == false){
+      HomeApi.createOrder(widget.dealId, context).then((value) {
+        setState(() {
+        });
+      });
+    }
+
   }
 
   @override

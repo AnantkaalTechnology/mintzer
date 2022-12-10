@@ -117,6 +117,8 @@ flutter:
     - images/receive_amount.png
     - images/spend_amount.png
     - images/home.png
+    - images/panding.png
+    - images/help.png
     - images/profit.png
     - images/done.png
     - images/delivered.png

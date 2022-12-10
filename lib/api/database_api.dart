@@ -22,6 +22,7 @@ class DatabaseApi {
   static String getUserNotifications = "get-user-notifications"; //done
   static String getOrders = "get-orders"; //done
   static String createAOrder = "create-a-order"; //done
+  static String cancelOrder = "cancel-order"; //done
   static String completeTheOrder = "complete-the-order"; //done
   static String getOrderDetailsById = "get-order-details-by-id";
   static String getWalletDetails = "get-wallet-details"; //done

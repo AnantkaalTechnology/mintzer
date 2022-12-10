@@ -89,7 +89,7 @@ class _NavDrawerState extends State<NavDrawer> {
 
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("₹${UserDetails.wallet}",
+                  child: Text("₹${HomeApi.walletModel!.totalEarnings}",
                       style: textStyle.subHeading.copyWith(
                           color: Colors.white,
                           fontSize: 33)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mintzer/Widgets/my_textfield.dart';
 import 'package:mintzer/Widgets/new_button.dart';
 import 'package:mintzer/Widgets/progressHud.dart';
@@ -64,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Center(
                             child: Text("Welcome Back!",
-                                style:
-                                    textStyle.heading.copyWith(color: colorDark)),
+                                style: textStyle.heading
+                                    .copyWith(color: colorDark)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(
@@ -92,24 +93,23 @@ class _LoginPageState extends State<LoginPage> {
                                 left: constants.defaultPadding,
                                 right: constants.defaultPadding),
                             function: () {
-
                               if (_formKey.currentState!.validate()) {
                                 setState(() {
                                   loading = true;
                                 });
                                 AuthApi.loginUser(
-                                    phoneNumberController.text.trim())
+                                        phoneNumberController.text.trim())
                                     .then((value) {
                                   customPrint("loginUser :: $value");
+                                  setState(() {
+                                    loading = false;
+                                  });
                                   if (value['result'].toString() == "1") {
                                     nextPage(context, OTPPage(jsonData: value));
-                                    setState(() {
-                                      loading = false;
-                                    });
+                                  } else if (value['result'].toString() ==
+                                      "3") {
+                                    nextPage(context, SignUpPage(phoneNumber: phoneNumberController.text.trim(),));
                                   } else {
-                                    setState(() {
-                                      loading = false;
-                                    });
                                     showSnackbar(
                                         context, value['msg'], colorError);
                                   }
@@ -123,18 +123,36 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Wrap(
                             children: [
-                              Text("Don’t have an account ?",
+                              Text("I agree to the Mintzer's ",
                                   style: textStyle.smallText),
                               InkWell(
                                 onTap: () {
-                                  nextPage(context, const SignUpPage());
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => SignUpPage()),
+                                  // );
                                 },
-                                child: Text(" Sign Up",
+                                child: Text("Terms and Conditions",
                                     style: textStyle.smallTextColorDark
                                         .copyWith(color: colorDark)),
                               ),
                             ],
                           ),
+                          // Wrap(
+                          //   children: [
+                          //     Text("Don’t have an account ?",
+                          //         style: textStyle.smallText),
+                          //     InkWell(
+                          //       onTap: () {
+                          //         nextPage(context, const SignUpPage());
+                          //       },
+                          //       child: Text(" Sign Up",
+                          //           style: textStyle.smallTextColorDark
+                          //               .copyWith(color: colorDark)),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),

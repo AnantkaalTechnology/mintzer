@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mintzer/home/api.dart';
+import 'package:mintzer/orders/api.dart';
 import 'package:mintzer/util/colors.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
@@ -226,6 +227,9 @@ class _DealPageState extends State<DealPage> {
                                       orderQuantity:
                                           HomeApi.dealOrderQuantity[index],
                                       orderPage: 0,
+                                      orderId: "",
+                                      dealerPrice: HomeApi.dealerPrice[index],
+
                                     ));
                               },
                               child: Stack(
@@ -349,6 +353,9 @@ class _DealPageState extends State<DealPage> {
                                                           orderQuantity: HomeApi
                                                                   .dealOrderQuantity[
                                                               index],
+                                                          orderId: OrderApi.orderId[index],
+                                                          dealerPrice: HomeApi.dealerPrice[index],
+
                                                         ));
                                                   },
                                                   buttonText:
@@ -368,7 +375,7 @@ class _DealPageState extends State<DealPage> {
                                       alignment: Alignment.topLeft,
                                       child: FadeInImage.assetNetwork(
                                         placeholder: "images/logo_dark.png",
-                                        image: HomeApi.storeImage[index],
+                                        image: HomeApi.dealStoreLogo[index],
                                         height: 28.h,
                                         width: 44.w,
                                         // fit: BoxFit.fill,

@@ -8,6 +8,7 @@ import 'package:mintzer/util/colors.dart';
 
 import '../api/database_api.dart';
 import '../globalVariable.dart';
+import '../model/wallet_model.dart';
 import '../util/constants.dart';
 
 class HomeApi {
@@ -375,6 +376,7 @@ class HomeApi {
 
     customPrint("jsonData :: $jsonData");
 
+
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.updateBankCard,
             data: jsonEncode(jsonData))
@@ -393,9 +395,17 @@ class HomeApi {
   }
 
   ///wallet
-  static String walletTotalEarnings = "NA";
-  static String walletTotalBalance = "NA";
-  static String walletBalance = "NA";
+  // static String walletTotalEarnings = "NA";
+  // static String walletTotalBalance = "NA";
+  // static String walletBalance = "NA";
+  // // static String walletOrderId = "";
+  // static String walletUserTotalEarnings = "NA";
+
+
+  static WalletModel? walletModel;
+
+
+  static List<String> walletOrderId = [];
 
   static Future<void> getWalletDetails(BuildContext context) async {
     final jsonData = {
@@ -404,6 +414,7 @@ class HomeApi {
     };
 
     customPrint("jsonData :: $jsonData");
+
 
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.getWalletDetails,
@@ -415,12 +426,27 @@ class HomeApi {
             context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
         return;
       }
-      final jsonData = jsonDecode(value.data);
-      int len = getJsonLength(jsonData);
-      customPrint("len :: $len");
-      walletTotalBalance = jsonData["total_balance"].toString();
-      walletTotalEarnings = jsonData["total_earnings"].toString();
-      walletBalance = jsonData["wallet"].toString();
+      walletModel = walletModelFromJson(value.data);
+
+      // final jsonData = jsonDecode(value.data);
+      // walletOrderId.clear();
+      //
+      // final orderJsonData = jsonDecode(value.data)["order"];
+      // final userJsonData = jsonDecode(value.data)["user"];
+      //
+      // int len = getJsonLength(jsonData);
+      // customPrint("len :: $len");
+      // walletTotalBalance = jsonData["total_balance"].toString();
+      // walletTotalEarnings = jsonData["total_earnings"].toString();
+      // walletBalance = jsonData["wallet"].toString();
+
+
+      // walletOrderId = orderJsonData["order_id"].toString();
+      ///array ko ke liye kya likhne ka idher yah ise hi call ho jata hai?
+
+
+
+      // walletUserTotalEarnings = jsonData["total_earnings"].toString();
 
       // walletBankName.add(jsonData[i]["bank_name"].toString());
       // walletBankAccountNumber.add(jsonData[i]["bank_account_number"].toString());
@@ -473,6 +499,40 @@ class HomeApi {
     });
   }
 
+  ///cancel order
+
+  ///Withdraw to bank account
+  static Future<String> cancelOrder(
+      BuildContext context, String orderId) async {
+    final jsonData = {
+      "auth_key": authKey,
+      "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
+      "order_id": orderId,
+    };
+
+    customPrint("jsonDatacancel:: $jsonData");
+
+    return await Dio()
+        .post(DatabaseApi.mainUrl + DatabaseApi.cancelOrder,
+        data: jsonEncode(jsonData))
+        .then((value) {
+      customPrint("cancelOrder :: ${value.data}");
+      if (jsonDecode(value.data)["result"].toString() == "0") {
+        showSnackbar(
+            context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
+        return "0";
+      }
+      final jsonData = jsonDecode(value.data)["orders"];
+      int len = getJsonLength(jsonData);
+      customPrint("len :: $len");
+      showSnackbar(
+          context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
+      return "1";
+    });
+  }
+
+
+
   ///Withdraw to bank account
   static Future<String> withdrawalRequests(
       BuildContext context, String orderId) async {
@@ -497,6 +557,8 @@ class HomeApi {
       final jsonData = jsonDecode(value.data)["orders"];
       int len = getJsonLength(jsonData);
       customPrint("len :: $len");
+      showSnackbar(
+          context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
       return "1";
     });
   }

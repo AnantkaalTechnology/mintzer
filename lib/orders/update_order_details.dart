@@ -11,7 +11,6 @@ import 'package:mintzer/util/colors.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
 
-import '../globalVariable.dart';
 import '../home/home_page.dart';
 
 class UpdateOrderDetails extends StatefulWidget {
@@ -208,7 +207,7 @@ class _UpdateOrderDetailsState extends State<UpdateOrderDetails> {
                                 orderTrackingIdController.text.trim(),
                                 orderCourierIdController.text.trim(),
                                 orderGstIdController.text.trim(),
-                                orderOtpController.text.trim())
+                                orderOtpController.text.trim(),"")
                             .then((value) {
                           if (value == "1") {
                             nextPage(context, const HomePage());

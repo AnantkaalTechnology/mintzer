@@ -27,6 +27,11 @@ class _CardPageState extends State<CardPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    HomeApi.getBankCards(context).then((value) {
+      setState(() {
+
+      });
+    });
   }
 
   @override
@@ -60,6 +65,7 @@ class _CardPageState extends State<CardPage> {
                 ),
               ),
               Container(
+                height: 100.h,
                 color: colorWhite,
                 padding:
                     const EdgeInsets.only(bottom: constants.defaultPadding),
@@ -180,6 +186,7 @@ class _CardPageState extends State<CardPage> {
   }
 
   Widget showAllCardsWidget(BuildContext context) {
+    customPrint("HomeApi.cardSBIName.length :: ${HomeApi.cardSBIName.length}");
     return Column(
       children: [
         Row(

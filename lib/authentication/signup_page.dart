@@ -12,10 +12,13 @@ import '../util/colors.dart';
 import 'otppage.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({Key? key,  this.phoneNumber = "NA"}) : super(key: key);
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
+
+  final String phoneNumber;
+
 }
 
 class _SignUpPageState extends State<SignUpPage> {
@@ -27,6 +30,15 @@ class _SignUpPageState extends State<SignUpPage> {
   final lastNameController = TextEditingController();
   final panCardNumberController = TextEditingController();
   final mobileNumberController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.phoneNumber != "NA"){
+      mobileNumberController.text = widget.phoneNumber;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

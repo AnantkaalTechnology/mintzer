@@ -1,8 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mintzer/api/database_api.dart';
 import 'package:mintzer/deal/order_detail_page.dart';
+import 'package:mintzer/deal/order_page.dart';
 import 'package:mintzer/home/api.dart';
+import 'package:mintzer/model/orders_model.dart';
 import 'package:mintzer/orders/api.dart';
 import 'package:mintzer/orders/complete_order_page.dart';
 import 'package:mintzer/orders/update_order_details.dart';
@@ -22,17 +25,20 @@ class OrderHistoryPage extends StatefulWidget {
 }
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
+
+  final fliporderController = TextEditingController();
+  int textedit = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     OrderApi.getOrders(context).then((value) {
-      setState(() {});
+      setState(() {
+      });
     });
     HomeApi.getDealsByStores(context).then((value) {
       setState(() {});
     });
-
     HomeApi.getStoresList(context).then((value) {
       setState(() {});
     });
@@ -62,31 +68,42 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
               height: constants.defaultPadding,
             ),
             Flexible(
-              child: ListView.builder(
-                itemCount: getStaticCount(OrderApi.orderTitle.length),
+              child: (OrderApi.ordersModel?.orders.length ?? 0) > 0 ?ListView.builder(
+                itemCount: getStaticCount(OrderApi.ordersModel?.orders.length ?? 0),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
                       nextPage(
                           context,
                           OrderDetailPage(
-                            productImage: HomeApi.dealImage[index],
-                            productTitle: HomeApi.dealTitle[index],
-                            productOfferTitle: HomeApi.dealOfferTitle[index],
-                            productOfferText: HomeApi.dealOfferText[index],
-                            productYouSpend: HomeApi.dealYouSpend[index],
-                            productTotalEarn: HomeApi.dealTotalEarnings[index],
-                            productCashback: HomeApi.dealCashback[index],
-                            productTotalReceive: HomeApi.dealYouReceive[index],
-                            productLink: HomeApi.dealOfferLink[index],
-                            productDealId: HomeApi.dealerId[index],
-                            dealId: HomeApi.dealId[index],
-                            orderQuantity: HomeApi.dealOrderQuantity[index],
+                            dealerPrice: HomeApi.dealerPrice[index],
+
                             orderPage: 1,
+                            orderId: OrderApi.ordersModel!.orders[index].orderId,
+                            productImage: DatabaseApi.imageUrl+ OrderApi.ordersModel!.orders[index].dealImage,
+                            productTitle: OrderApi.ordersModel!.orders[index].dealTitle,
+                            productOfferTitle:
+                            OrderApi.ordersModel!.orders[index].offerTitle,
+                            productOfferText:
+                            OrderApi.ordersModel!.orders[index].offerText,
+                            productYouSpend:
+                            OrderApi.ordersModel!.orders[index].youWillSpend,
+                            productTotalEarn:
+                            OrderApi.ordersModel!.orders[index].totalEarnings,
+                            productCashback:
+                            OrderApi.ordersModel!.orders[index].cashback,
+                            productTotalReceive:
+                            OrderApi.ordersModel!.orders[index].totalYouWillReceive,
+                            productLink: OrderApi.ordersModel!.orders[index].offerLink,
+                            productDealId: OrderApi.ordersModel!.orders[index].dealerId,
+                            dealId: OrderApi.ordersModel!.orders[index].id,
+                            orderQuantity:OrderApi.ordersModel!.orders[index].orderQuantity,
+
+
                           ));
                     },
                     child: Card(
-                      margin: EdgeInsets.only(bottom: constants.defaultPadding),
+                      margin: const EdgeInsets.only(bottom: constants.defaultPadding),
                       shape: RoundedRectangleBorder(
                         borderRadius: constants.borderRadius,
                         side: const BorderSide(
@@ -104,17 +121,17 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                   style: textStyle.smallText
                                       .copyWith(color: colorHeadingText),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: constants.defaultPadding,
                                 ),
                                 Text(
-                                  OrderApi.orderId[index],
+                                  OrderApi.ordersModel!.orders[index].orderId,
                                   style: textStyle.smallTextColorDark
                                       .copyWith(color: colorHeadingText),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: constants.defaultPadding / 2,
                             ),
                             Row(
@@ -142,7 +159,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                               vertical:
                                                   constants.defaultPadding / 2),
                                           child: Text(
-                                            "$rupeeSign ${OrderApi.orderYouSpend[index]}",
+                                            "$rupeeSign ${OrderApi.ordersModel!.orders[index].youWillSpend}",
                                             style: textStyle.smallTextColorDark
                                                 .copyWith(color: colorCustom),
                                           ),
@@ -162,7 +179,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: constants.borderRadius,
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               width: 0.4,
                                               color: colorSubHeadingText),
                                         ),
@@ -195,7 +212,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                         elevation: 0,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: constants.borderRadius,
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               width: 0.4,
                                               color: colorSubHeadingText),
                                         ),
@@ -207,7 +224,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                               vertical:
                                                   constants.defaultPadding / 2),
                                           child: Text(
-                                            "$rupeeSign ${OrderApi.orderTotalEarning[index]}",
+                                            "$rupeeSign ${OrderApi.ordersModel!.orders[index].totalEarnings}",
                                             style: textStyle.smallTextColorDark
                                                 .copyWith(
                                                     color: colorHeadingText),
@@ -219,7 +236,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: constants.defaultPadding,
                             ),
                             Row(
@@ -227,14 +244,14 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                               children: [
                                 FadeInImage.assetNetwork(
                                   placeholder: "images/logo_dark.png",
-                                  image: OrderApi.orderImage[index],
+                                  image: DatabaseApi.imageUrl+ OrderApi.ordersModel!.orders[index].image,
                                   height: 111.h,
                                   fit: BoxFit.fill,
                                   // width: 99,
                                   imageErrorBuilder: imageErrorBuilder,
                                   placeholderFit: BoxFit.none,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: constants.defaultPadding,
                                 ),
                                 Expanded(
@@ -265,12 +282,12 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Icon(
+                                                const Icon(
                                                   Icons.verified,
                                                   size: 12,
                                                   color: colorWarning,
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width:
                                                       constants.defaultPadding /
                                                           4,
@@ -289,17 +306,17 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                         ),
                                       ),
                                       Text(
-                                        OrderApi.orderTitle[index],
+                                        OrderApi.ordersModel!.orders[index].title,
                                         style: textStyle.subHeadingColorDark,
                                       ),
                                       Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.verified,
                                             color: colorSuccess,
                                             size: 12,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: constants.defaultPadding / 4,
                                           ),
                                           Text(
@@ -309,43 +326,47 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                           )
                                         ],
                                       ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.credit_card,
-                                            color: colorHeadingText,
-                                            size: 12,
-                                          ),
-                                          SizedBox(
-                                            width: constants.defaultPadding / 4,
-                                          ),
-                                          Text(
-                                            "Flipkart Card",
-                                            style: textStyle.smallText.copyWith(
-                                                color: colorHeadingText),
-                                          )
-                                        ],
-                                      ),
+                                      // Row(
+                                      //   children: [
+                                      //     const Icon(
+                                      //       Icons.credit_card,
+                                      //       color: colorHeadingText,
+                                      //       size: 12,
+                                      //     ),
+                                      //     const SizedBox(
+                                      //       width: constants.defaultPadding / 4,
+                                      //     ),
+                                      //     Text(
+                                      //       "Flipkart Card",
+                                      //       style: textStyle.smallText.copyWith(
+                                      //           color: colorHeadingText),
+                                      //     )
+                                      //   ],
+                                      // ),
                                       Text(
-                                        "Flipkart Order #",
+                                        "${OrderApi.ordersModel!.orders[index].storeName} Order #",
                                         style: textStyle.smallText
                                             .copyWith(color: colorHeadingText),
                                       ),
-                                      SizedBox(
-                                        height: 46.h,
-                                        width: double.infinity,
-                                        child: TextFormField(
-                                          textAlignVertical:
-                                              TextAlignVertical.center,
-                                          keyboardType: TextInputType.number,
-                                          textCapitalization:
-                                              TextCapitalization.sentences,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "999-999999-999999",
-                                            hintStyle: textStyle.subHeading
-                                                .copyWith(
-                                                    color: colorSubHeadingText),
+                                      Visibility(
+                                        visible:  OrderApi.ordersModel!.orders[index].storeOrderId.isEmpty ? true : false,
+                                        child: SizedBox(
+                                          height: 46.h,
+                                          width: double.infinity,
+                                          child: TextFormField(
+                                            controller: fliporderController,
+                                            textAlignVertical:
+                                                TextAlignVertical.center,
+                                            keyboardType: TextInputType.number,
+                                            textCapitalization:
+                                                TextCapitalization.sentences,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "999-999999-999999",
+                                              hintStyle: textStyle.subHeading
+                                                  .copyWith(
+                                                      color: colorSubHeadingText),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -360,9 +381,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                 context: context,
                                                 buttonText: "Save",
                                                 height: 36.h,
+                                                enable:fliporderController.text.trim().length == 15 ? true: false,
                                                 textStyle: textStyle.button
                                                     .copyWith(fontSize: 14.sp),
-                                                margin: EdgeInsets.symmetric(
+                                                margin: const EdgeInsets.symmetric(
                                                   horizontal:
                                                       constants.defaultPadding /
                                                           2,
@@ -372,22 +394,51 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
                                           ///order now button--------------
                                           Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "haven't placed the order",
-                                                  style: textStyle.smallText,
-                                                ),
-                                                Text(
-                                                  "Order Now>",
-                                                  style: textStyle
-                                                      .smallTextColorDark
-                                                      .copyWith(
-                                                          color: colorDark),
-                                                ),
-                                              ],
+                                            child: InkWell(
+                                              onTap: (){
+                                                nextPage(
+                                                    context,
+                                                    OrderPage(
+                                                      productImage: DatabaseApi.imageUrl+ OrderApi.ordersModel!.orders[index].dealImage,
+                                                      productTitle: OrderApi.ordersModel!.orders[index].dealTitle,
+                                                      productOfferTitle:
+                                                      OrderApi.ordersModel!.orders[index].offerTitle,
+                                                      productOfferText:
+                                                      OrderApi.ordersModel!.orders[index].offerText,
+                                                      productYouSpend:
+                                                      OrderApi.ordersModel!.orders[index].youWillSpend,
+                                                      productTotalEarn:
+                                                      OrderApi.ordersModel!.orders[index].totalEarnings,
+                                                      productCashback:
+                                                      OrderApi.ordersModel!.orders[index].cashback,
+                                                      productTotalReceive:
+                                                      OrderApi.ordersModel!.orders[index].totalYouWillReceive,
+                                                      productLink: OrderApi.ordersModel!.orders[index].offerLink,
+                                                      productDealId: OrderApi.ordersModel!.orders[index].dealerId,
+                                                      dealId: OrderApi.ordersModel!.orders[index].id,
+                                                      orderQuantity:OrderApi.ordersModel!.orders[index].orderQuantity,
+                                                      orderNow: true,
+
+
+                                                    ));
+                                              },
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "haven't placed the order",
+                                                    style: textStyle.smallText,
+                                                  ),
+                                                  Text(
+                                                    "Order Now>",
+                                                    style: textStyle
+                                                        .smallTextColorDark
+                                                        .copyWith(
+                                                            color: colorDark),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           )
                                         ],
@@ -402,182 +453,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                       ),
                     ),
                   );
-                  return Card(
-                    margin: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: constants.borderRadius,
-                      side: const BorderSide(
-                          width: 0.2, color: colorSubHeadingText),
-                    ),
-                    elevation: 0,
-                    child: OrderApi.orderTitle.isEmpty
-                        ? Shimmer.fromColors(
-                            baseColor: colorWhite,
-                            highlightColor: colorDisable,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ///----------title------
-                                Container(
-                                  height: 190.h,
-                                  color: colorDisable,
-                                ),
-                                const SizedBox(
-                                  height: constants.defaultPadding / 4,
-                                ),
-
-                                ///---------description---------
-                                Container(
-                                  height: 44.h,
-                                  color: colorDisable,
-                                ),
-                                const SizedBox(
-                                  height: constants.defaultPadding,
-                                ),
-                                Container(
-                                  height: 36.h,
-                                  color: colorDisable,
-                                ),
-                              ],
-                            ),
-                          )
-                        : Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                    constants.defaultPadding),
-
-                                ///---------Image
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: "images/logo_dark.png",
-                                  image: OrderApi.orderImage[index],
-                                  height: 150.h,
-                                  width: double.infinity,
-                                  // fit: BoxFit.fill,
-                                  imageErrorBuilder: imageErrorBuilder,
-                                  placeholderFit: BoxFit.none,
-                                ),
-                              ),
-                              Container(
-                                height: 144.h,
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(
-                                    constants.defaultPadding),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft:
-                                          Radius.circular(constants.radius),
-                                      bottomRight:
-                                          Radius.circular(constants.radius),
-                                    ),
-                                    color: colorCardWhite),
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ///----------title------
-                                          Text(
-                                            OrderApi.orderTitle[index],
-                                            style: textStyle.smallTextColorDark
-                                                .copyWith(
-                                                    color: colorHeadingText),
-                                            textAlign: TextAlign.center,
-                                            maxLines: 2,
-                                          ),
-                                          //
-                                          // ///---------description---------
-                                          Text(
-                                            "Store Name : ${OrderApi.orderStoreName[index]}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: textStyle.smallText.copyWith(
-                                                color: colorHeadingText),
-                                            maxLines: 2,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: NewButton(
-                                          margin: const EdgeInsets.only(
-                                              bottom: constants.defaultPadding),
-                                          height: 36,
-                                          context: context,
-                                          color: OrderApi.orderStatus[index]
-                                                      .toString() ==
-                                                  "0"
-                                              ? colorDark
-                                              : colorSuccess,
-                                          textStyle: textStyle.subButton
-                                              .copyWith(fontSize: 12),
-                                          function: () {
-                                            if (OrderApi.orderStatus[index]
-                                                    .toString() ==
-                                                "0") {
-                                              nextPage(
-                                                  context,
-                                                  CompleteOrderPage(
-                                                    productImage: OrderApi
-                                                        .orderImage[index],
-                                                    productTitle: OrderApi
-                                                        .orderTitle[index],
-                                                    orderId:
-                                                        OrderApi.orderId[index],
-                                                    youSpend: OrderApi
-                                                        .orderYouSpend[index],
-                                                    totalEarning: OrderApi
-                                                            .orderTotalEarning[
-                                                        index],
-                                                    storeName: OrderApi
-                                                        .orderStoreName[index],
-                                                    orderStatus: OrderApi
-                                                        .orderStatus[index],
-                                                    orderMainId: OrderApi
-                                                        .orderMainId[index],
-                                                  ));
-                                            } else {
-                                              nextPage(
-                                                  context,
-                                                  UpdateOrderDetails(
-                                                    productImage: OrderApi
-                                                        .orderImage[index],
-                                                    productTitle: OrderApi
-                                                        .orderTitle[index],
-                                                    orderId:
-                                                        OrderApi.orderId[index],
-                                                    youSpend: OrderApi
-                                                        .orderYouSpend[index],
-                                                    totalEarning: OrderApi
-                                                            .orderTotalEarning[
-                                                        index],
-                                                    storeName: OrderApi
-                                                        .orderStoreName[index],
-                                                    orderStatus: OrderApi
-                                                        .orderStatus[index],
-                                                    orderMainId: OrderApi
-                                                        .orderMainId[index],
-                                                  ));
-                                            }
-                                          },
-                                          buttonText: OrderApi
-                                                      .orderStatus[index]
-                                                      .toString() ==
-                                                  "0"
-                                              ? "Complete Order"
-                                              : "Completed"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                  );
                 },
-              ),
+              ):const Center(child: CircularProgressIndicator()),
             )
           ],
         ),
@@ -603,8 +480,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
   getTotalReceive(int index) {
     double sum = 0;
-    sum = double.parse(OrderApi.orderYouSpend[index]) +
-        double.parse(OrderApi.orderTotalEarning[index]);
+    sum = double.parse(OrderApi.ordersModel!.orders[index].youWillSpend) +
+        double.parse(OrderApi.ordersModel!.orders[index].totalEarnings);
     return sum.toStringAsFixed(0);
   }
 }

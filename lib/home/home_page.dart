@@ -8,9 +8,9 @@ import 'package:mintzer/home/api.dart';
 import 'package:mintzer/home/cards_page.dart';
 import 'package:mintzer/home/deal_page.dart';
 import 'package:mintzer/home/nav_drawer.dart';
-import 'package:mintzer/home/navigaton_feed.dart';
 import 'package:mintzer/home/notification_page.dart';
 import 'package:mintzer/home/wallet_page.dart';
+import 'package:mintzer/orders/api.dart';
 import 'package:mintzer/orders/order_history_page.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
@@ -71,6 +71,8 @@ class _HomePageState extends State<HomePage> {
         splash = false;
       });
     });
+
+    HomeApi.getWalletDetails(context);
 
     HomeApi.getFeeds(context).then((value) {
       setState(() {});
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                           height: 40.h,
                           width: 45.w,
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
@@ -239,8 +241,8 @@ class _HomePageState extends State<HomePage> {
                     builder: (BuildContext context) {
                       return Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: const BoxDecoration(
                           color: colorWhite,
                         ),
                         child: Image.asset(
@@ -321,6 +323,8 @@ class _HomePageState extends State<HomePage> {
                                 nextPage(
                                     context,
                                     OrderDetailPage(
+
+                                      dealerPrice: HomeApi.dealerPrice[index],
                                       productImage: HomeApi.dealImage[index],
                                       productTitle: HomeApi.dealTitle[index],
                                       productOfferTitle:
@@ -341,6 +345,8 @@ class _HomePageState extends State<HomePage> {
                                       orderQuantity:
                                           HomeApi.dealOrderQuantity[index],
                                       orderPage: 0,
+                                      orderId: "",
+
                                     ));
                               },
                               child: Column(
@@ -426,6 +432,7 @@ class _HomePageState extends State<HomePage> {
                                                 nextPage(
                                                     context,
                                                     OrderDetailPage(
+                                                      dealerPrice: HomeApi.dealerPrice[index],
                                                       productImage: HomeApi
                                                           .dealImage[index],
                                                       productTitle: HomeApi
@@ -454,6 +461,8 @@ class _HomePageState extends State<HomePage> {
                                                       orderQuantity: HomeApi
                                                               .dealOrderQuantity[
                                                           index],
+                                                      orderId: OrderApi.orderId[index],
+
                                                     ));
                                               },
                                               buttonText:
@@ -513,7 +522,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   bottomOptions("Home", "images/home.png", 0),
                   bottomOptions("Orders", "images/checkout.png", 1),
-                  SizedBox(
+                  const SizedBox(
                     width: 88,
                   ),
                   bottomOptions("Cards", "images/card.png", 2),

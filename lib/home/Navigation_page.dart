@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mintzer/authentication/login_page.dart';
 import 'package:mintzer/home/cards_page.dart';
 import 'package:mintzer/home/deal_page.dart';
 
 // import 'package:nexus/home/add_device_page.dart';
-import 'package:mintzer/home/home_page.dart';
 import 'package:mintzer/home/wallet_page.dart';
 import 'package:mintzer/orders/order_history_page.dart';
 // import 'package:mintzer/home/investment_page.dart';
@@ -23,10 +21,10 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int index = 0;
   final screens = [
-    OrderHistoryPage(),
-    DealPage(),
-    CardPage(),
-    WalletPage(),
+    const OrderHistoryPage(),
+    const DealPage(),
+    const CardPage(),
+    const WalletPage(),
 
     // AddDevicePage(),
 
@@ -40,10 +38,10 @@ class _NavigationPageState extends State<NavigationPage> {
         data: NavigationBarThemeData(
             indicatorColor: colorDark,
             labelTextStyle: MaterialStateProperty.all(
-              TextStyle(fontSize: 14, fontWeight: FontWeight.w500,color: colorWhite),
+              const TextStyle(fontSize: 14, fontWeight: FontWeight.w500,color: colorWhite),
             )),
         child: ClipRRect(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
           ),
@@ -52,7 +50,7 @@ class _NavigationPageState extends State<NavigationPage> {
             height: 80,
             backgroundColor: colorDark,
             selectedIndex: index,
-            animationDuration: Duration(seconds: 1),
+            animationDuration: const Duration(seconds: 1),
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             onDestinationSelected: (index) => setState(() => this.index = index),
             destinations: [
