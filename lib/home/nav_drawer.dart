@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mintzer/feed/support_page.dart';
 import 'package:mintzer/home/api.dart';
+import 'package:mintzer/home/faq_page.dart';
 import 'package:mintzer/home/notification_page.dart';
 import 'package:mintzer/util/colors.dart';
 import 'package:mintzer/util/constants.dart';
@@ -125,23 +126,15 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: Image.asset(
-              "images/update_password.png",
-              color: Colors.black,
-              height: 20.h,
-              width: 20.w,
-            ),
-            title: Text('Password'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Image.asset(
               "images/faq.png",
               color: Colors.black,
               height: 20.h,
               width: 20.w,
             ),
             title: Text('FAQ'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {
+              nextPage(context, const FAQPage())
+            },
           ),
           ListTile(
             leading: Image.asset(

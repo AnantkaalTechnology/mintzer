@@ -496,6 +496,7 @@ class HomeApi {
       orderPincode = jsonAddressData["pincode"].toString();
       orderCountry = jsonAddressData["country"].toString();
       orderGst = jsonData["gst_number"].toString();
+      customPrint("orderFullName :: $orderFullName");
     });
   }
 

@@ -1,18 +1,18 @@
-import 'package:auto_size_text/auto_size_text.dart';
+// import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mintzer/api/database_api.dart';
 import 'package:mintzer/deal/order_detail_page.dart';
 import 'package:mintzer/deal/order_page.dart';
 import 'package:mintzer/home/api.dart';
-import 'package:mintzer/model/orders_model.dart';
+// import 'package:mintzer/model/orders_model.dart';
 import 'package:mintzer/orders/api.dart';
-import 'package:mintzer/orders/complete_order_page.dart';
-import 'package:mintzer/orders/update_order_details.dart';
+// import 'package:mintzer/orders/complete_order_page.dart';
+// import 'package:mintzer/orders/update_order_details.dart';
 import 'package:mintzer/util/colors.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
-import 'package:shimmer/shimmer.dart';
+// import 'package:shimmer/shimmer.dart';
 
 import '../Widgets/new_button.dart';
 import '../globalVariable.dart';
@@ -28,6 +28,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
   final fliporderController = TextEditingController();
   int textedit = 0;
+  int firstShow = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -266,9 +267,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 constants.borderRadius,
-                                            side: const BorderSide(
+                                            side:  BorderSide(
                                                 width: 0.4,
-                                                color: colorWarning),
+                                                color:OrderApi.ordersModel!.orders[index].storeOrderId.isEmpty ? colorWarning : colorSuccess),
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -282,21 +283,20 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                const Icon(
+                                                 Icon(
                                                   Icons.verified,
                                                   size: 12,
-                                                  color: colorWarning,
+                                                  color:OrderApi.ordersModel!.orders[index].storeOrderId.isEmpty ? colorWarning : colorSuccess,
                                                 ),
                                                 const SizedBox(
                                                   width:
                                                       constants.defaultPadding /
                                                           4,
                                                 ),
-                                                Text(
-                                                  "Accepted",
+                                                Text( OrderApi.ordersModel!.orders[index].storeOrderId.isEmpty ?  "Created" : "Completed",
                                                   style: textStyle.smallText
                                                       .copyWith(
-                                                          color: colorWarning)
+                                                          color:OrderApi.ordersModel!.orders[index].storeOrderId.isEmpty ? colorWarning : colorSuccess)
                                                       .copyWith(
                                                           fontSize: 10.sp),
                                                 )
@@ -354,10 +354,13 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                           height: 46.h,
                                           width: double.infinity,
                                           child: TextFormField(
+                                            onChanged: (value) {
+                                              setState(() {});
+                                            },
                                             controller: fliporderController,
                                             textAlignVertical:
                                                 TextAlignVertical.center,
-                                            keyboardType: TextInputType.number,
+                                            // keyboardType: TextInputType.number,
                                             textCapitalization:
                                                 TextCapitalization.sentences,
                                             decoration: InputDecoration(
@@ -381,7 +384,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                 context: context,
                                                 buttonText: "Save",
                                                 height: 36.h,
-                                                enable:fliporderController.text.trim().length == 15 ? true: false,
+                                                enable:fliporderController.text.trim().length == 20 ? true: false,
                                                 textStyle: textStyle.button
                                                     .copyWith(fontSize: 14.sp),
                                                 margin: const EdgeInsets.symmetric(

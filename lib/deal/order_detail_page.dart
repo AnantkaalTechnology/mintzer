@@ -1,4 +1,6 @@
+// import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mintzer/Widgets/new_button.dart';
 import 'package:mintzer/Widgets/progressHud.dart';
@@ -8,7 +10,7 @@ import 'package:mintzer/feed/support_page.dart';
 import 'package:mintzer/globalVariable.dart';
 import 'package:mintzer/home/api.dart';
 import 'package:mintzer/home/home_page.dart';
-import 'package:mintzer/model/orders_model.dart';
+// import 'package:mintzer/model/orders_model.dart';
 import 'package:mintzer/orders/api.dart';
 
 // import 'package:mintzer/orders/step_progress_bar.dart';
@@ -69,6 +71,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   bool loading = false;
   int clickEdit = 1;
   int clickBtn = 0;
+  bool trackingValidation = false;
+
+  // String ekartFormat = "[A-Z]{4}[0-9]{10}";
+  // RegExpMatch
 
   // Initial Selected Value
   String dropdownvalue = 'Select';
@@ -95,18 +101,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         widget.orderId,
       ).then((value) {
         setState(() {
-          if (OrderApi.storeOrderId.isNotEmpty) {
+          if (OrderApi.storeOrderId.trim().isNotEmpty) {
             steps = 1;
           }
-          if (OrderApi.trackingId.isNotEmpty ||
-              OrderApi.storeOrderId.isNotEmpty) {
+          if (OrderApi.trackingId.trim().isNotEmpty) {
             steps = 2;
           }
-          if (OrderApi.shippedOtp.isNotEmpty) {
+          if (OrderApi.shippedOtp.trim().isNotEmpty) {
             steps = 3;
           }
-          if( OrderApi.deliveredStatus == "1"){
-            steps =4;
+          if (OrderApi.deliveredStatus == "1") {
+            steps = 4;
           }
 
           customPrint("use: $steps ");
@@ -123,7 +128,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    _context=context;
+    _context = context;
     return Scaffold(
       body: SafeArea(
         child: ProgressHUD(
@@ -574,49 +579,49 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   ),
 
                   ///---------offer detail card------------
-                  Card(
-                    semanticContainer: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    elevation: 0,
-                    color: colorWhite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: constants.borderRadius,
-                      side: const BorderSide(width: 0.4, color: colorDark),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(constants.defaultPadding),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Text(
-                                      "offer details",
-                                      style: textStyle.subHeadingColorDark
-                                          .copyWith(color: colorHeadingText),
-                                    )),
-                                const SizedBox(
-                                  height: constants.defaultPadding / 2,
-                                ),
-                                Text(
-                                  "10% off on Cradit Card, up to ₹1500. On orders of ₹5000 and above",
-                                  style: textStyle.smallText
-                                      .copyWith(color: colorHeadingText),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Image.asset(
-                            "images/kotak.jpg",
-                            height: 80.h,
-                            width: 80.w,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Card(
+                  //   semanticContainer: true,
+                  //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                  //   elevation: 0,
+                  //   color: colorWhite,
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: constants.borderRadius,
+                  //     side: const BorderSide(width: 0.4, color: colorDark),
+                  //   ),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(constants.defaultPadding),
+                  //     child: Row(
+                  //       children: [
+                  //         Expanded(
+                  //           child: Column(
+                  //             children: [
+                  //               Align(
+                  //                   alignment: Alignment.topLeft,
+                  //                   child: Text(
+                  //                     "offer details",
+                  //                     style: textStyle.subHeadingColorDark
+                  //                         .copyWith(color: colorHeadingText),
+                  //                   )),
+                  //               const SizedBox(
+                  //                 height: constants.defaultPadding / 2,
+                  //               ),
+                  //               Text(
+                  //                 "10% off on Cradit Card, up to ₹1500. On orders of ₹5000 and above",
+                  //                 style: textStyle.smallText
+                  //                     .copyWith(color: colorHeadingText),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //         Image.asset(
+                  //           "images/kotak.jpg",
+                  //           height: 80.h,
+                  //           width: 80.w,
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
 
                   ///---------
                   ///
@@ -981,7 +986,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
                   ///-------------delivery details---------
                   Visibility(
-                    visible: widget.orderPage == 0 ? false : true,
+                    visible: widget.orderPage == 0 ? false : false,
                     child: Card(
                       semanticContainer: true,
                       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -1008,25 +1013,24 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   const SizedBox(
                                     height: constants.defaultPadding,
                                   ),
-                                  detailsWidget("Arjit Dash", ""),
+                                  detailsWidget(HomeApi.orderFullName, ""),
                                   const SizedBox(
                                     height: constants.defaultPadding / 2,
                                   ),
-                                  detailsWidget("",
-                                      "Appartment No. 416, 4th floor, 1st Block,, Satyabati Enclave,,"),
+                                  detailsWidget("", HomeApi.orderAddressLine1),
                                   const SizedBox(
                                     height: constants.defaultPadding / 2,
                                   ),
-                                  detailsWidget("",
-                                      "behind SBI Main Branch, Shivanand nagar, Bargarh"),
+                                  detailsWidget("", HomeApi.orderAddressLine2),
                                   const SizedBox(
                                     height: constants.defaultPadding / 2,
                                   ),
-                                  detailsWidget("", "Odisha"),
+                                  detailsWidget("", HomeApi.orderCity),
                                   const SizedBox(
                                     height: constants.defaultPadding / 2,
                                   ),
-                                  detailsWidget("Pincode : ", "768028"),
+                                  detailsWidget(
+                                      "Pincode : ", HomeApi.orderPincode),
                                 ],
                               ),
                             ),
@@ -1145,7 +1149,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     child: TextFormField(
                       controller: fliporderController,
                       textAlignVertical: TextAlignVertical.center,
-                      keyboardType: TextInputType.number,
+                      // keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.sentences,
                       onChanged: (value) {
                         setState(() {});
@@ -1191,7 +1195,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               Expanded(
                 child: NewButton(
                   context: context,
-                  enable: fliporderController.text.trim().length == 15
+                  enable: fliporderController.text.trim().length == 20
                       ? true
                       : false,
                   buttonText: "Save",
@@ -1322,9 +1326,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "${OrderApi.storeTitle} order #",
-                style: textStyle.smallText.copyWith(color: colorHeadingText),
+              Expanded(
+                child
+                    : Text(
+                  "${OrderApi.storeTitle} order#",
+                  style: textStyle.smallText.copyWith(color: colorHeadingText),
+                ),
               ),
               Row(
                 children: [
@@ -1399,62 +1406,83 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 onChanged: (String? newValue) {
                   setState(() {
                     dropdownvalue = newValue!;
+                    customPrint(newValue);
                   });
                 },
               ),
-              // DropdownButton<String>(
-              //   value: dropdownValue,
-              //   icon: const Icon(Icons.arrow_downward),
-              //   elevation: 16,
-              //   style: const TextStyle(color: colorDark),
-              //   underline: Container(
-              //     height: 1,
-              //     color: colorDark,
-              //   ),
-              //   onChanged: (String? value) {
-              //     // This is called when the user selects an item.
-              //     setState(() {
-              //       dropdownValue = value!;
-              //     });
-              //   },
-              //   //vicky
-              //   items: list.map<DropdownMenuItem<String>>((String value) {
-              //     return DropdownMenuItem<String>(
-              //       value: value,
-              //       child: Text(value),
-              //     );
-              //   }).toList(),
-              // ),
-              // GestureDetector(
-              //   onTap: () {
-              //     // selectCourierOptions(context);
-              //
-              //   },
-              //   child: Text(
-              //     "Select courier patner",
-              //     style: textStyle.smallText.copyWith(
-              //         color: colorHeadingText,
-              //         decoration: TextDecoration.underline),
-              //   ),
-              // ),
             ],
           ),
           const SizedBox(
             height: constants.defaultPadding,
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: Alignment.topLeft,
             child: SizedBox(
               height: 46.h,
               width: 200,
               child: TextFormField(
                 onChanged: (value) {
-                  setState(() {});
+                  if (dropdownvalue == "Ekart logistics" ) {
+                    if(value.trim().contains(RegExp(
+                        r"^([A-Z]{4}[0-9])")))
+                    {
+                      customPrint("Valid Data");
+
+                      setState(() {
+                        trackingValidation = true;
+                      });
+                    }
+                  }else if(dropdownvalue == "Delhivery"){
+                    if(value.trim().contains(RegExp(
+                        r"^([0-9])")))
+                    {
+                      customPrint("Valid Data Delhivery");
+
+                      setState(() {
+                        trackingValidation = true;
+                      });
+                    }
+                  }else if(dropdownvalue == "Bluedart") {
+                    if(value.trim().contains(RegExp(
+                        r"^([0-9])")))
+                    {
+                      customPrint("Valid Data Bluedart");
+
+                      setState(() {
+                        trackingValidation = true;
+                      });
+                    }
+                  }else if(dropdownvalue == "Ecom"){
+                    if(value.trim().contains(RegExp(
+                        r"^([0-9])")))
+                    {
+                      customPrint("Valid Data Bluedart");
+
+                      setState(() {
+                        trackingValidation = true;
+                      });
+                    }
+                  }else if(dropdownvalue == "xpressbees"){
+                    if(value.trim().contains(RegExp(
+                        r"^([0-9])")))
+                    {
+                      customPrint("Valid Data Bluedart");
+
+                      setState(() {
+                        trackingValidation = true;
+                      });
+                    }
+                  }
+
                 },
                 controller: trackingIdController,
                 textAlignVertical: TextAlignVertical.center,
-                keyboardType: TextInputType.number,
+                // keyboardType: TextInputType.number,
                 textCapitalization: TextCapitalization.sentences,
+                // inputFormatters: <TextInputFormatter>[
+                //   FilteringTextInputFormatter.allow(RegExp(
+                //       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")),
+                // ],
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: "99999-999999-999999",
@@ -1475,7 +1503,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   context: context,
                   buttonText: "Save",
                   height: 36.h,
-                  enable: trackingIdController.text.trim().length == 15
+                  enable: (trackingIdController.text.trim().length >= 9 && trackingValidation == true)
                       ? true
                       : false,
                   textStyle: textStyle.button.copyWith(fontSize: 14.sp),
@@ -1672,7 +1700,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 },
                 controller: orderDeliveryOtpController,
                 textAlignVertical: TextAlignVertical.center,
-                keyboardType: TextInputType.number,
+                // keyboardType: TextInputType.number,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -1904,7 +1932,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ),
             ],
           ),
-
         ],
       ),
     );
@@ -1925,7 +1952,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  nextPage(context, SupportPage());
+                  nextPage(context, const SupportPage());
                 },
                 child: const Icon(
                   Icons.info,
@@ -2036,8 +2063,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   "Pay out",
                   style: textStyle.smallText.copyWith(color: colorHeadingText),
                 ),
-                Text(OrderApi.isPayout == "0" ?
-                  "Payment is processing" : "Payment is done",
+                Text(
+                  OrderApi.isPayout == "0"
+                      ? "Payment is processing"
+                      : "Payment is done",
                   style: textStyle.smallText.copyWith(color: colorHeadingText),
                 ),
               ],
@@ -2055,14 +2084,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               function: () {
                 setState(() {
                   loading = true;
-
                 });
-                HomeApi.withdrawalRequests(context, widget.orderId).then((value) {
+                HomeApi.withdrawalRequests(context, widget.orderId)
+                    .then((value) {
                   // OrderApi.getOrdersByOrderId(context, widget.orderId).then((value) {
-                    setState(() {
-                      loading = false;
-                    });
-                    nextPage(context, HomePage());
+                  setState(() {
+                    loading = false;
+                  });
+                  nextPage(context, const HomePage());
                   // });
                 });
               },
@@ -2084,92 +2113,89 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context,_setState) {
-            return AlertDialog(
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "Update Jio Mart order #",
-                    style: textStyle.subHeading.copyWith(color: colorHeadingText),
-                  ),
-                  SizedBox(
-                    height: 46.h,
-                    width: 200,
-                    child: TextFormField(
-                      onChanged: (value) {
-                        _setState(() {});
-                      },
-                      controller: editController,
-                      textAlignVertical: TextAlignVertical.center,
-                      keyboardType: TextInputType.number,
-                      textCapitalization: TextCapitalization.sentences,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: " Enter your OTP/PIN",
-                        hintStyle: textStyle.subHeading
-                            .copyWith(color: colorSubHeadingText),
-                      ),
+        return StatefulBuilder(builder: (context, _setState) {
+          return AlertDialog(
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Update Jio Mart order #",
+                  style: textStyle.subHeading.copyWith(color: colorHeadingText),
+                ),
+                SizedBox(
+                  height: 46.h,
+                  width: 200,
+                  child: TextFormField(
+                    onChanged: (value) {
+                      _setState(() {});
+                    },
+                    controller: editController,
+                    textAlignVertical: TextAlignVertical.center,
+                    // keyboardType: TextInputType.number,
+                    textCapitalization: TextCapitalization.sentences,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Update ID",
+                      hintStyle: textStyle.subHeading
+                          .copyWith(color: colorSubHeadingText),
                     ),
                   ),
-                  NewButton(
-                    context: context,
-                    buttonText: "Save",
-                    height: 36.h,
-                    enable: editController.text.trim().length == 15
-                        ? true
-                        : false,
-                    textStyle: textStyle.button.copyWith(fontSize: 14.sp),
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: constants.defaultPadding / 2,
-                    ),
-                    function: () {
-                      Navigator.pop(context);
-                      setState(() {
-                        loading = true;
-                      });
-                      if (value == 1) {
-                        trackingIdController.text =editController.text;
-                      } else {
-                        fliporderController.text =  editController.text;
-                      }
-                      customPrint("steps : $steps");
-                      OrderApi.updateOrderForm(
-                              context,
-                              fliporderController.text.trim(),
-                              trackingIdController.text.trim(),
-                              'NA',
-                              'NA',
-                              orderDeliveryOtpController.text.trim(),
-                              widget.orderId)
+                ),
+                NewButton(
+                  context: context,
+                  buttonText: "Update",
+                  height: 36.h,
+                  enable:
+                      editController.text.trim().length == 15 ? true : false,
+                  textStyle: textStyle.button.copyWith(fontSize: 14.sp),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: constants.defaultPadding / 2,
+                  ),
+                  function: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      loading = true;
+                    });
+                    if (value == 1) {
+                      trackingIdController.text = editController.text;
+                    } else {
+                      fliporderController.text = editController.text;
+                    }
+                    customPrint("steps : $steps");
+                    OrderApi.updateOrderForm(
+                            context,
+                            fliporderController.text.trim(),
+                            trackingIdController.text.trim(),
+                            'NA',
+                            'NA',
+                            orderDeliveryOtpController.text.trim(),
+                            widget.orderId)
+                        .then((value) {
+                      OrderApi.getOrdersByOrderId(context, widget.orderId)
                           .then((value) {
-                        OrderApi.getOrdersByOrderId(context, widget.orderId)
-                            .then((value) {
-                          setState(() {
-                            loading = false;
-                          });
+                        setState(() {
+                          loading = false;
                         });
                       });
-                      // OrderApi.updateOrderForm(
-                      //     context,
-                      //     fliporderController.text
-                      //         .trim(),
-                      //     trackingIdController.text
-                      //         .trim(),
-                      //     'NA',
-                      //     'NA',
-                      //     orderDeliveryOtpController
-                      //         .text
-                      //         .trim());
-                    },
-                  ),
-                ],
-              ),
-            );
-          }
-        );
+                    });
+                    // OrderApi.updateOrderForm(
+                    //     context,
+                    //     fliporderController.text
+                    //         .trim(),
+                    //     trackingIdController.text
+                    //         .trim(),
+                    //     'NA',
+                    //     'NA',
+                    //     orderDeliveryOtpController
+                    //         .text
+                    //         .trim());
+                  },
+                ),
+              ],
+            ),
+          );
+        });
       },
     );
   }
@@ -2202,12 +2228,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 });
                 HomeApi.cancelOrder(_context, widget.orderId).then((value) {
                   setState(() {
-                    loading=false;
+                    loading = false;
                   });
-                  if(value == "1"){
-
-                    nextPage(_context, HomePage());
-
+                  if (value == "1") {
+                    nextPage(_context, const HomePage());
                   }
                 });
               },
@@ -2250,8 +2274,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ),
           Image.asset(
             "images/copyicon.png",
-            height: 8.h,
-            width: 8.w,
+            height: 12.h,
+            width: 12.w,
           ),
         ],
       ),
