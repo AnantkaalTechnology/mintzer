@@ -20,7 +20,7 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   List<String> iconcard = [
     "images/account.png",
-    "images/support.png",
+    "images/support1.png",
     "images/update_password.png",
     "images/faq.png",
     "images/notification.png",

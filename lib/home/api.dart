@@ -8,6 +8,7 @@ import 'package:mintzer/util/colors.dart';
 
 import '../api/database_api.dart';
 import '../globalVariable.dart';
+import '../model/wallet_model.dart';
 import '../util/constants.dart';
 
 class HomeApi {
@@ -17,6 +18,7 @@ class HomeApi {
   static List<String> feedImage = [];
   static List<String> feedStatus = [];
   static List<String> feedDateTime = [];
+  static String dealsNotes = '';
 
   static Future<void> getFeeds(BuildContext context) async {
     final jsonData = {
@@ -51,6 +53,33 @@ class HomeApi {
         feedDateTime.add(jsonData[i]["date_time"].toString());
         feedStatus.add(jsonData[i]["status"].toString());
       }
+      customPrint("feed image : ${feedImage}");
+    });
+  }
+
+
+
+  ///-----------getDealsNotes-------------
+  static Future<void> getDealsNotes(BuildContext context) async {
+    final jsonData = {
+      "auth_key": authKey,
+      "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
+    };
+
+    customPrint("jsonData :: $jsonData");
+
+    return await Dio()
+        .post(DatabaseApi.mainUrl + DatabaseApi.getDealsNotes,
+            data: jsonEncode(jsonData))
+        .then((value) {
+      customPrint("getFeeds :: ${value.data}");
+      if (jsonDecode(value.data)["result"].toString() == "0") {
+        showSnackbar(
+            context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
+        return;
+      }
+       dealsNotes = jsonDecode(value.data)["data"][0]["notes"].toString();
+
     });
   }
 
@@ -115,6 +144,7 @@ class HomeApi {
   static List<String> dealOrderQuantity = [];
   static List<String> dealStatus = [];
   static List<String> dealStoreLogo = [];
+  static List<String> dealDiscount = [];
 
   static Future<void> getDealsByStores(BuildContext context) async {
     final jsonData = {
@@ -155,6 +185,7 @@ class HomeApi {
       dealOrderQuantity.clear();
       dealStatus.clear();
       dealStoreLogo.clear();
+      dealDiscount.clear();
       for (int i = 0; i < len; i++) {
         dealId.add(jsonData[i]["id"].toString());
         dealStoreId.add(jsonData[i]["store_id"].toString());
@@ -172,6 +203,7 @@ class HomeApi {
         dealTotalEarnings.add(jsonData[i]["total_earnings"].toString());
         dealOfferLink.add(jsonData[i]["offer_link"].toString());
         dealOrderQuantity.add(jsonData[i]["order_quantity"].toString());
+        dealDiscount.add(jsonData[i]["discount"].toString());
         dealStatus.add(jsonData[i]["deal_status"].toString());
         dealStoreLogo
             .add(DatabaseApi.imageUrl + jsonData[i]["store_logo"].toString());
@@ -375,6 +407,7 @@ class HomeApi {
 
     customPrint("jsonData :: $jsonData");
 
+
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.updateBankCard,
             data: jsonEncode(jsonData))
@@ -393,9 +426,17 @@ class HomeApi {
   }
 
   ///wallet
-  static String walletTotalEarnings = "NA";
-  static String walletTotalBalance = "NA";
-  static String walletBalance = "NA";
+  // static String walletTotalEarnings = "NA";
+  // static String walletTotalBalance = "NA";
+  // static String walletBalance = "NA";
+  // // static String walletOrderId = "";
+  // static String walletUserTotalEarnings = "NA";
+
+
+  static WalletModel? walletModel;
+
+
+  static List<String> walletOrderId = [];
 
   static Future<void> getWalletDetails(BuildContext context) async {
     final jsonData = {
@@ -404,6 +445,7 @@ class HomeApi {
     };
 
     customPrint("jsonData :: $jsonData");
+
 
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.getWalletDetails,
@@ -415,12 +457,27 @@ class HomeApi {
             context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
         return;
       }
-      final jsonData = jsonDecode(value.data);
-      int len = getJsonLength(jsonData);
-      customPrint("len :: $len");
-      walletTotalBalance = jsonData["total_balance"].toString();
-      walletTotalEarnings = jsonData["total_earnings"].toString();
-      walletBalance = jsonData["wallet"].toString();
+      walletModel = walletModelFromJson(value.data);
+
+      // final jsonData = jsonDecode(value.data);
+      // walletOrderId.clear();
+      //
+      // final orderJsonData = jsonDecode(value.data)["order"];
+      // final userJsonData = jsonDecode(value.data)["user"];
+      //
+      // int len = getJsonLength(jsonData);
+      // customPrint("len :: $len");
+      // walletTotalBalance = jsonData["total_balance"].toString();
+      // walletTotalEarnings = jsonData["total_earnings"].toString();
+      // walletBalance = jsonData["wallet"].toString();
+
+
+      // walletOrderId = orderJsonData["order_id"].toString();
+      ///array ko ke liye kya likhne ka idher yah ise hi call ho jata hai?
+
+
+
+      // walletUserTotalEarnings = jsonData["total_earnings"].toString();
 
       // walletBankName.add(jsonData[i]["bank_name"].toString());
       // walletBankAccountNumber.add(jsonData[i]["bank_account_number"].toString());
@@ -470,8 +527,63 @@ class HomeApi {
       orderPincode = jsonAddressData["pincode"].toString();
       orderCountry = jsonAddressData["country"].toString();
       orderGst = jsonData["gst_number"].toString();
+      customPrint("orderFullName :: $orderFullName");
     });
   }
+
+  ///cancel old order
+  static Future<String> cancelOldOrders(
+      BuildContext context) async {
+    final jsonData = {
+      "auth_key": authKey,
+      "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
+    };
+
+    // customPrint("jsonDatacancel:: $jsonData");
+
+    return await Dio()
+        .get(DatabaseApi.mainUrl + DatabaseApi.cancelOldOrders)
+        .then((value) {
+      customPrint("cancelOldOrders :: ${value.data}");
+
+      return "0";
+    });
+  }
+
+
+
+
+  ///Withdraw to bank account
+  static Future<String> cancelOrder(
+      BuildContext context, String orderId) async {
+    final jsonData = {
+      "auth_key": authKey,
+      "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
+      "order_id": orderId,
+    };
+
+    customPrint("jsonDatacancel:: $jsonData");
+
+    return await Dio()
+        .post(DatabaseApi.mainUrl + DatabaseApi.cancelOrder,
+        data: jsonEncode(jsonData))
+        .then((value) {
+      customPrint("cancelOrder :: ${value.data}");
+      if (jsonDecode(value.data)["result"].toString() == "0") {
+        showSnackbar(
+            context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
+        return "0";
+      }
+      final jsonData = jsonDecode(value.data)["orders"];
+      int len = getJsonLength(jsonData);
+      customPrint("len :: $len");
+      showSnackbar(
+          context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
+      return "1";
+    });
+  }
+
+
 
   ///Withdraw to bank account
   static Future<String> withdrawalRequests(
@@ -497,6 +609,8 @@ class HomeApi {
       final jsonData = jsonDecode(value.data)["orders"];
       int len = getJsonLength(jsonData);
       customPrint("len :: $len");
+      showSnackbar(
+          context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
       return "1";
     });
   }

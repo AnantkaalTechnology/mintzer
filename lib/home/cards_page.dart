@@ -4,6 +4,7 @@ import 'package:mintzer/Widgets/my_textfield.dart';
 import 'package:mintzer/home/api.dart';
 import 'package:mintzer/util/colors.dart';
 import 'package:mintzer/util/constants.dart';
+import 'package:mintzer/util/text_styles.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../globalVariable.dart';
@@ -27,6 +28,9 @@ class _CardPageState extends State<CardPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    HomeApi.getBankCards(context).then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -52,14 +56,14 @@ class _CardPageState extends State<CardPage> {
                       const SizedBox(
                         height: constants.defaultPadding * 8,
                       ),
-                      searchController.text.isEmpty
-                          ? showAllCardsWidget(context)
-                          : showFilterCardsWidget(context),
+                       showFilterCardsWidget(context),
+                      SizedBox(height: constants.defaultPadding*5,),
                     ],
                   ),
                 ),
               ),
               Container(
+                height: 100.h,
                 color: colorWhite,
                 padding:
                     const EdgeInsets.only(bottom: constants.defaultPadding),
@@ -80,6 +84,7 @@ class _CardPageState extends State<CardPage> {
 
                       setState(() {});
                     },
+                    suffixIcon: Icon(Icons.search,size: 22,),
                     controller: searchController,
                     hint: "Search your card here"),
               ),
@@ -93,6 +98,7 @@ class _CardPageState extends State<CardPage> {
   Column showFilterCardsWidget(BuildContext context) {
     return Column(
       children: [
+        searchController.text.isEmpty ? Container() :
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -110,76 +116,93 @@ class _CardPageState extends State<CardPage> {
         const SizedBox(
           height: constants.defaultPadding * 2,
         ),
-        filterCardId.isEmpty
+        searchController.text.isEmpty
             ? Padding(
-                padding:
-                    const EdgeInsets.only(top: constants.defaultPadding * 4),
-                child: loadingWidget(
-                    "No Card Found", "No result for ${searchController.text}"),
-              )
-            : MediaQuery.removePadding(
-                removeTop: true,
-                context: context,
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: getStaticCount(filterCardId.length),
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.5,
-                    crossAxisSpacing: constants.defaultPadding,
-                    mainAxisSpacing: constants.defaultPadding,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: () {
-                        if (selectedCard.contains(filterCardId[index])) {
-                          selectedCard.remove(filterCardId[index]);
-                        } else {
-                          selectedCard.add(filterCardId[index]);
-                        }
-                        setState(() {});
-                        HomeApi.updateBankCard(context, filterCardId[index])
-                            .then((value) {});
-                      },
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          FadeInImage.assetNetwork(
-                            placeholder: "images/logo_dark.png",
-                            image: filterCardImage[index],
-                            // height: 222.h,
-                            // width: double.infinity,
-                            fit: BoxFit.fill,
-                            placeholderFit: BoxFit.none,
-                            imageErrorBuilder: imageErrorBuilder,
-                          ),
-                          selectedCard.contains(filterCardId[index])
-                              ? Card(
-                                  margin: const EdgeInsets.all(
-                                      constants.defaultPadding / 2),
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: constants.borderRadius * 100,
-                                  ),
-                                  child: const Icon(
-                                    Icons.done_rounded,
-                                    size: 22,
-                                    color: colorDark,
-                                  ),
-                                )
-                              : Container()
-                        ],
-                      ),
-                    );
-                  },
+                padding: EdgeInsets.all(constants.defaultPadding),
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'images/searchcard.png',
+                      scale: 3,
+                    ),
+                    SizedBox(height: constants.defaultPadding,),
+                    Text("Search for add card",style: textStyle.subHeading,)
+                  ],
                 ),
-              ),
+              )
+            : filterCardId.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(
+                        top: constants.defaultPadding * 4),
+                    child: loadingWidget("No Card Found",
+                        "No result for ${searchController.text}"),
+                  )
+                : MediaQuery.removePadding(
+                    removeTop: true,
+                    context: context,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: getStaticCount(filterCardId.length),
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.5,
+                        crossAxisSpacing: constants.defaultPadding,
+                        mainAxisSpacing: constants.defaultPadding,
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            if (selectedCard.contains(filterCardId[index])) {
+                              selectedCard.remove(filterCardId[index]);
+                            } else {
+                              selectedCard.add(filterCardId[index]);
+                            }
+                            setState(() {});
+                            HomeApi.updateBankCard(context, filterCardId[index])
+                                .then((value) {});
+                          },
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              FadeInImage.assetNetwork(
+                                placeholder: "images/logo_dark.png",
+                                image: filterCardImage[index],
+                                // height: 222.h,
+                                // width: double.infinity,
+                                fit: BoxFit.fill,
+                                placeholderFit: BoxFit.none,
+                                imageErrorBuilder: imageErrorBuilder,
+                              ),
+                              selectedCard.contains(filterCardId[index])
+                                  ? Card(
+                                      margin: const EdgeInsets.all(
+                                          constants.defaultPadding / 2),
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            constants.borderRadius * 100,
+                                      ),
+                                      child: const Icon(
+                                        Icons.done_rounded,
+                                        size: 22,
+                                        color: colorDark,
+                                      ),
+                                    )
+                                  : Container()
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
       ],
     );
   }
 
   Widget showAllCardsWidget(BuildContext context) {
+    customPrint("HomeApi.cardSBIName.length :: ${HomeApi.cardSBIName.length}");
     return Column(
       children: [
         Row(

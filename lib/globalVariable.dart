@@ -78,7 +78,7 @@ int limitValue(int length, int limit) {
   return length;
 }
 
-String rupeeSign = "₹";
+String rupeeSign = "Rs.";
 
 // void openDrawerPage(context) {
 //   Navigator.push(
@@ -163,6 +163,16 @@ bool validateField(context, TextEditingController controller,
     return false;
   }
   return false;
+}
+
+String checkNull(String? text, [String res = "NA"]) {
+  if (text == null ||
+      text.toString().trim() == "" ||
+      text.toString().trim().isEmpty) {
+    return res;
+  }
+
+  return text;
 }
 
 Widget titleTextField(String s, TextEditingController nameController,
@@ -474,3 +484,9 @@ int getStaticCount(int data, [int maxCount = 4]) {
   }
   return maxCount;
 }
+
+// emptyController(List<TextEditingController> contList ){
+//   for(int i=0; i < contList.length; i++){
+//     contList[i].clear();
+//   }
+// }

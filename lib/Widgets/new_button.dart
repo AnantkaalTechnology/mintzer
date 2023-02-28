@@ -19,6 +19,7 @@ class NewButton extends StatelessWidget {
   final TextStyle? textStyle;
   final margin;
   final borderRadius;
+  final bool enable;
 
   NewButton({
     required this.context,
@@ -32,18 +33,28 @@ class NewButton extends StatelessWidget {
     this.rDefaultWidget = true,
     this.child = const Text("default"),
     this.textStyle,
-    this.margin, this.borderRadius,
+    this.margin, this.borderRadius,  this.enable = true,
   });
 
   @override
   Widget build(BuildContext context) {
+
+    if(!enable){
+      color = colorDisable;
+    }
+
     return Padding(
       padding: margin ?? EdgeInsets.zero,
       child: SizedBox(
         height: height,
         width: width,
         child: ElevatedButton(
-          onPressed: () => function(),
+          onPressed: (){
+            if(enable){
+              function();
+
+            }
+            },
           style: ButtonStyle(
             overlayColor: MaterialStateProperty.resolveWith(
               (states) {

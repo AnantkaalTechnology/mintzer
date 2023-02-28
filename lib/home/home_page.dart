@@ -8,9 +8,10 @@ import 'package:mintzer/home/api.dart';
 import 'package:mintzer/home/cards_page.dart';
 import 'package:mintzer/home/deal_page.dart';
 import 'package:mintzer/home/nav_drawer.dart';
-import 'package:mintzer/home/navigaton_feed.dart';
 import 'package:mintzer/home/notification_page.dart';
 import 'package:mintzer/home/wallet_page.dart';
+
+// import 'package:mintzer/orders/api.dart';
 import 'package:mintzer/orders/order_history_page.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
@@ -38,6 +39,9 @@ class _HomePageState extends State<HomePage> {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
+  int _current = 0;
+  final CarouselController _carouselController = CarouselController();
+
   List<String> banner = <String>[
     "Jaipur",
     "Delhi",
@@ -47,9 +51,9 @@ class _HomePageState extends State<HomePage> {
   ];
   List<String> sbicard = [
     "images/bannertwo.png",
+    "images/amazon.jpg",
     "images/bannertwo.png",
-    "images/bannertwo.png",
-    "images/bannertwo.png",
+    "images/amazon.jpg",
     "images/bannertwo.png",
   ];
 
@@ -66,11 +70,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    HomeApi.cancelOldOrders(context);
+
     UserDetails.getUserDetails(context).then((value) {
       setState(() {
         splash = false;
       });
     });
+
+    HomeApi.getWalletDetails(context);
 
     HomeApi.getFeeds(context).then((value) {
       setState(() {});
@@ -87,15 +96,13 @@ class _HomePageState extends State<HomePage> {
         return Future.value(false);
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
         body: splash
             ? const SplaceScreen()
             : Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 55),
-                    child: getPage(currentPage),
-                  ),
+                  getPage(currentPage),
                   bottomNavigationButton(),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -141,27 +148,26 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: constants.defaultPadding*9),
+                    padding: const EdgeInsets.only(
+                        bottom: constants.defaultPadding * 9),
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           nextPage(context, const SupportPage());
                         },
                         child: Container(
                           height: 40.h,
                           width: 45.w,
-
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  colorDark,
-                                  colorDark1,
-
-                                ],
-                              ),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                colorDark50,
+                                colorDark501,
+                              ],
+                            ),
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(constants.radius),
                                 topLeft: Radius.circular(constants.radius)),
@@ -173,11 +179,12 @@ class _HomePageState extends State<HomePage> {
                             // ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(constants.defaultPadding/2),
+                            padding: const EdgeInsets.all(
+                                constants.defaultPadding / 2),
                             child: Image.asset(
-                              "images/support.png",
-                              color: colorWhite,
-                              height: 16.h,
+                              "images/support1.png",
+                              color: Colors.black,
+                              height: 15.h,
                               width: 16.w,
                             ),
                           ),
@@ -227,23 +234,30 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               CarouselSlider(
+                carouselController: _carouselController,
                 options: CarouselOptions(
+                  onPageChanged: (index, reason) {
+                    customPrint("index :: $index");
+                    setState(() {
+                      _current = index;
+                    });
+                  },
                   // height: 184.h,
                   viewportFraction: 1,
                   autoPlay: true,
                   autoPlayCurve: Curves.fastOutSlowIn,
                   pauseAutoPlayOnTouch: true,
                 ),
-                items: sbicard.map((index) {
+                items: HomeApi.feedImage.map((index) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: const BoxDecoration(
                           color: colorWhite,
                         ),
-                        child: Image.asset(
+                        child: Image.network(
                           index,
                           fit: BoxFit.fill,
                         ),
@@ -251,6 +265,31 @@ class _HomePageState extends State<HomePage> {
                     },
                   );
                 }).toList(),
+              ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: HomeApi.feedImage.asMap().entries.map((entry) {
+                    return GestureDetector(
+                      onTap: () => _carouselController.animateToPage(entry.key),
+                      child: Container(
+                        width: 8.w,
+                        height: 8.h,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: constants.defaultPadding / 3,
+                            horizontal: constants.defaultPadding / 3),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color:
+                                (Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black)
+                                    .withOpacity(
+                                        _current == entry.key ? 0.9 : 0.4)),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -263,64 +302,54 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: getStaticCount(HomeApi.dealTitle.length),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.5,
-                    crossAxisSpacing: constants.defaultPadding,
-                    mainAxisSpacing: constants.defaultPadding,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      margin: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: constants.borderRadius,
-                        side: const BorderSide(
-                            width: 0.2, color: colorSubHeadingText),
+              HomeApi.dealTitle.isEmpty
+                  ? Container(
+                height: 500.h,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'images/collabration.png',
+                              height: 200.h,
+                              width: 200.w,
+                            ),
+                            Text(
+                              "We are cooking deals please wait",
+                              style: textStyle.subHeading,
+                            ),
+                          ],
+                        ),
                       ),
-                      elevation: 0,
-                      child: HomeApi.dealTitle.isEmpty
-                          ? Shimmer.fromColors(
-                              baseColor: colorWhite,
-                              highlightColor: colorDisable,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ///----------title------
-                                  Container(
-                                    height: 190.h,
-                                    color: colorDisable,
-                                  ),
-                                  const SizedBox(
-                                    height: constants.defaultPadding / 4,
-                                  ),
-
-                                  ///---------description---------
-                                  Container(
-                                    height: 44.h,
-                                    color: colorDisable,
-                                  ),
-                                  const SizedBox(
-                                    height: constants.defaultPadding,
-                                  ),
-                                  Container(
-                                    height: 36.h,
-                                    color: colorDisable,
-                                  ),
-                                ],
-                              ),
-                            )
-                          : InkWell(
+                    )
+                  : MediaQuery.removePadding(
+                      context: context,
+                      removeTop: true,
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: getStaticCount(HomeApi.dealTitle.length),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.5,
+                          crossAxisSpacing: constants.defaultPadding,
+                          mainAxisSpacing: constants.defaultPadding,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            margin: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: constants.borderRadius,
+                              side: const BorderSide(
+                                  width: 0.2, color: colorSubHeadingText),
+                            ),
+                            elevation: 0,
+                            child: InkWell(
                               onTap: () {
                                 nextPage(
                                     context,
                                     OrderDetailPage(
+                                      dealerPrice: HomeApi.dealerPrice[index],
                                       productImage: HomeApi.dealImage[index],
                                       productTitle: HomeApi.dealTitle[index],
                                       productOfferTitle:
@@ -340,6 +369,9 @@ class _HomePageState extends State<HomePage> {
                                       dealId: HomeApi.dealId[index],
                                       orderQuantity:
                                           HomeApi.dealOrderQuantity[index],
+                                      orderPage: 0,
+                                      orderId: "",
+                                      dealDiscount: HomeApi.dealDiscount[index],
                                     ));
                               },
                               child: Column(
@@ -425,6 +457,8 @@ class _HomePageState extends State<HomePage> {
                                                 nextPage(
                                                     context,
                                                     OrderDetailPage(
+                                                      dealerPrice: HomeApi
+                                                          .dealerPrice[index],
                                                       productImage: HomeApi
                                                           .dealImage[index],
                                                       productTitle: HomeApi
@@ -453,7 +487,47 @@ class _HomePageState extends State<HomePage> {
                                                       orderQuantity: HomeApi
                                                               .dealOrderQuantity[
                                                           index],
+                                                      orderPage: 0,
+                                                      orderId: "",
+                                                      dealDiscount: HomeApi
+                                                          .dealDiscount[index],
                                                     ));
+                                                // nextPage(
+                                                //     context,
+                                                //     OrderDetailPage(
+                                                //       dealerPrice: HomeApi
+                                                //           .dealerPrice[index],
+                                                //       productImage: HomeApi
+                                                //           .dealImage[index],
+                                                //       productTitle: HomeApi
+                                                //           .dealTitle[index],
+                                                //       productOfferTitle: HomeApi
+                                                //               .dealOfferTitle[
+                                                //           index],
+                                                //       productOfferText: HomeApi
+                                                //           .dealOfferText[index],
+                                                //       productYouSpend: HomeApi
+                                                //           .dealYouSpend[index],
+                                                //       productTotalEarn: HomeApi
+                                                //               .dealTotalEarnings[
+                                                //           index],
+                                                //       productCashback: HomeApi
+                                                //           .dealCashback[index],
+                                                //       productTotalReceive:
+                                                //           HomeApi.dealYouReceive[
+                                                //               index],
+                                                //       productLink: HomeApi
+                                                //           .dealOfferLink[index],
+                                                //       productDealId: HomeApi
+                                                //           .dealerId[index],
+                                                //       dealId:
+                                                //           HomeApi.dealId[index],
+                                                //       orderQuantity: HomeApi
+                                                //               .dealOrderQuantity[
+                                                //           index],
+                                                //       orderId: OrderApi
+                                                //           .orderId[index],
+                                                //     ));
                                               },
                                               buttonText:
                                                   "Earn ${HomeApi.dealTotalEarnings[index]}",
@@ -466,9 +540,12 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                    );
-                  },
-                ),
+                          );
+                        },
+                      ),
+                    ),
+              const SizedBox(
+                height: constants.defaultPadding * 5,
               ),
             ],
           ),
@@ -512,7 +589,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   bottomOptions("Home", "images/home.png", 0),
                   bottomOptions("Orders", "images/checkout.png", 1),
-                  SizedBox(
+                  const SizedBox(
                     width: 88,
                   ),
                   bottomOptions("Cards", "images/card.png", 2),

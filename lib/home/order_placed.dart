@@ -32,7 +32,7 @@ class _OrderPlacedPageState extends State<OrderPlacedPage> {
                 height: 250.h,
                 width: 250.w,
               ),
-              SizedBox(height: constants.defaultPadding*3,),
+              const SizedBox(height: constants.defaultPadding*3,),
               Card(
                 semanticContainer: true,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -50,17 +50,17 @@ class _OrderPlacedPageState extends State<OrderPlacedPage> {
                         "Order Successfully Placed!",
                         style: textStyle.heading,
                       ),
-                      SizedBox(height: constants.defaultPadding,),
+                      const SizedBox(height: constants.defaultPadding,),
                       Text(
                         "E-comm Order ID",
                         style: textStyle.subHeading,
                       ),
-                      SizedBox(height: constants.defaultPadding/3,),
+                      const SizedBox(height: constants.defaultPadding/3,),
                       Text(
                         "OD226564411801528000",
                         style: textStyle.subHeading,
                       ),
-                      SizedBox(height: constants.defaultPadding,),
+                      const SizedBox(height: constants.defaultPadding,),
                       CircleAvatar(
                         radius: constants.radius * 2,
                         backgroundColor: colorError,
@@ -73,17 +73,17 @@ class _OrderPlacedPageState extends State<OrderPlacedPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: constants.defaultPadding,),
+                      const SizedBox(height: constants.defaultPadding,),
                       Text(
                         "₹13,729",
                         style: textStyle.heading,
                       ),
-                      SizedBox(height: constants.defaultPadding/2,),
+                      const SizedBox(height: constants.defaultPadding/2,),
                       Text(
                         "added to your wallet",
                         style: textStyle.subHeading,
                       ),
-                      SizedBox(height: constants.defaultPadding/2,),
+                      const SizedBox(height: constants.defaultPadding/2,),
                       Align(
                         alignment: Alignment.center,
                         child: Text(
@@ -91,7 +91,7 @@ class _OrderPlacedPageState extends State<OrderPlacedPage> {
                           style: textStyle.smallText,
                         ),
                       ),
-                      SizedBox(height: constants.defaultPadding,),
+                      const SizedBox(height: constants.defaultPadding,),
                       NewButton(context: context, function: (){},buttonText: "Go to home",width: 140.w,color: colorDark,),
 
                     ],
