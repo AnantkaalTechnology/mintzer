@@ -250,7 +250,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "mintraz order id",
+                          "mintzer order id",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),
@@ -268,7 +268,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Flipkart order #",
+                          "Flipkart order",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),
@@ -422,7 +422,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "mintraz order id",
+                          "mintzer order id",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),
@@ -440,7 +440,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Flipkart order #",
+                          "Flipkart order",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),
@@ -610,7 +610,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "mintraz order id",
+                          "mintzer order id",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),
@@ -628,7 +628,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Flipkart order #",
+                          "Flipkart order",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),
@@ -768,7 +768,7 @@ class _SteopProgressBarPageState extends State<SteopProgressBarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "mintraz order id",
+                          "mintzer order id",
                           style: textStyle.smallText
                               .copyWith(color: colorHeadingText),
                         ),

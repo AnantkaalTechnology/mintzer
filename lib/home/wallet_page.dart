@@ -49,7 +49,8 @@ class _WalletPageState extends State<WalletPage> {
                     children: [
                       CircleAvatar(
                         radius: constants.radius * 2,
-                        backgroundColor: colorHeadingText,
+                        backgroundColor: colorDark,
+                        child: Text(UserDetails.firstName.characters.first,style: textStyle.heading.copyWith(color: colorWhite),),
                       ),
                       const SizedBox(
                         width: constants.defaultPadding / 2,
@@ -59,12 +60,13 @@ class _WalletPageState extends State<WalletPage> {
                         children: [
                           Text(
                             "Welcome",
-                            style: textStyle.smallTextColorDark,
+                            style: textStyle.subHeading,
                           ),
                           Text(
-                              "${UserDetails.firstName}",
-                            style: textStyle.smallTextColorDark
-                                .copyWith(color: colorHeadingText),),
+                            "${UserDetails.firstName}",
+                            style: textStyle.subHeadingColorDark
+                                .copyWith(color: colorHeadingText),
+                          ),
                           // Text(
                           //   "Vignesh",
                           //   style: textStyle.smallTextColorDark
@@ -74,29 +76,29 @@ class _WalletPageState extends State<WalletPage> {
                       )
                     ],
                   ),
-                  Card(
-                    // color: colorCustom.shade100,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: constants.borderRadius,
-                      side: const BorderSide(width: 1, color: colorHeadingText),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: constants.defaultPadding * 1,
-                          vertical: constants.defaultPadding / 2),
-                      child: GestureDetector(
-                        onTap: (){
-                          // nextPage(context, StepperPage());
-                        },
-                        child: Text(
-                          "Refer & Earn Upto ₹10,000",
-                          style: textStyle.smallText
-                              .copyWith(color: colorHeadingText),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Card(
+                  //   // color: colorCustom.shade100,
+                  //   elevation: 0,
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: constants.borderRadius,
+                  //     side: const BorderSide(width: 1, color: colorHeadingText),
+                  //   ),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(
+                  //         horizontal: constants.defaultPadding * 1,
+                  //         vertical: constants.defaultPadding / 2),
+                  //     child: GestureDetector(
+                  //       onTap: () {
+                  //         // nextPage(context, StepperPage());
+                  //       },
+                  //       child: Text(
+                  //         "Refer & Earn Upto ₹10,000",
+                  //         style: textStyle.smallText
+                  //             .copyWith(color: colorHeadingText),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(
@@ -105,7 +107,7 @@ class _WalletPageState extends State<WalletPage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Mintraz Wallet",
+                  "mintzer Wallet",
                   style: textStyle.subHeadingColorDark
                       .copyWith(color: colorHeadingText),
                 ),
@@ -113,7 +115,7 @@ class _WalletPageState extends State<WalletPage> {
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  "₹${HomeApi.walletModel!.totalEarnings}",
+                  "₹${HomeApi.walletModel!.totalBalance}",
                   style: textStyle.heading.copyWith(color: colorHeadingText),
                 ),
               ),
@@ -127,52 +129,52 @@ class _WalletPageState extends State<WalletPage> {
               const SizedBox(
                 height: constants.defaultPadding,
               ),
-              Flexible(
-                child: MediaQuery.removePadding(
-                  removeTop: true,
-                  context: context,
-                  child: ListView.builder(
-                      itemCount:
-                          getStaticCount(HomeApi.walletModel?.orders.length??0, 15),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          elevation: 0,
-                          color: colorCardWhite,
-                          margin: const EdgeInsets.only(
-                              bottom: constants.defaultPadding),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: constants.borderRadius,
-                            side: const BorderSide(
-                                width: 0.2, color: colorSubHeadingText),
+              (HomeApi.walletModel?.orders.length ?? 0) == 0
+                  ? Center(
+                    child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: constants.defaultPadding*4),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "images/space.png",
+                                height: 200.h,
+                                width: 200.w,
+                              ),
+                              SizedBox(height: constants.defaultPadding,),
+                              Text("You haven't ordered anything yet",style: textStyle.subHeading,)
+                            ],
                           ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.all(constants.defaultPadding),
-                            child: Stack(
-                              children: [
-                                (HomeApi.walletModel?.orders.length??0)==0
-                                    ? Shimmer.fromColors(
-                                        baseColor: colorWhite,
-                                        highlightColor: colorDisable,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 22.h,
-                                              width: double.infinity,
-                                              color: colorDisable,
-                                            ),
-                                            Container(
-                                              height: 22.h,
-                                              width: double.infinity,
-                                              color: colorDisable,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : Column(
+                        ),
+                      ),
+                  )
+                  : Flexible(
+                      child: MediaQuery.removePadding(
+                        removeTop: true,
+                        context: context,
+                        child: ListView.builder(
+                            itemCount: getStaticCount(
+                                HomeApi.walletModel?.orders.length ?? 0, 15),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                elevation: 0,
+                                color: colorCardWhite,
+                                margin: const EdgeInsets.only(
+                                    bottom: constants.defaultPadding),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: constants.borderRadius,
+                                  side: const BorderSide(
+                                      width: 0.2, color: colorSubHeadingText),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(
+                                      constants.defaultPadding),
+                                  child: Stack(
+                                    children: [
+                                      Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -180,18 +182,29 @@ class _WalletPageState extends State<WalletPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(HomeApi.walletModel!.orders[index].isPayout == "0"?
-                                                "Payment pending": "Payment received",
+                                              Text(
+                                                HomeApi.walletModel!.orders[index]
+                                                            .isPayout ==
+                                                        "0"
+                                                    ? "Payment pending"
+                                                    : "Payment received",
                                                 style: textStyle.subHeading
                                                     .copyWith(
                                                         color: colorHeadingText),
                                               ),
                                               Text(
-                                                HomeApi.walletModel!.orders[index].totalEarnings,
+                                                HomeApi.walletModel!.orders[index]
+                                                    .totalEarnings,
                                                 style: textStyle
                                                     .subHeadingColorDark
                                                     .copyWith(
-                                                        color: HomeApi.walletModel!.orders[index].isPayout == "0"? colorWarning : colorSuccess),
+                                                        color: HomeApi
+                                                                    .walletModel!
+                                                                    .orders[index]
+                                                                    .isPayout ==
+                                                                "0"
+                                                            ? colorWarning
+                                                            : colorSuccess),
                                               ),
                                             ],
                                           ),
@@ -219,37 +232,38 @@ class _WalletPageState extends State<WalletPage> {
                                           ),
                                         ],
                                       ),
-                                // Align(
-                                //   alignment: Alignment.topRight,
-                                //   child: Card(
-                                //     elevation: 0,
-                                //     color: colorDark,
-                                //     margin: const EdgeInsets.only(
-                                //         bottom: constants.defaultPadding),
-                                //     shape: RoundedRectangleBorder(
-                                //       borderRadius: constants.borderRadius * 100,
-                                //       // side: const BorderSide(
-                                //       //     width: 0.2, color: colorSubHeadingText),
-                                //     ),
-                                //     child: Padding(
-                                //       padding: const EdgeInsets.all(
-                                //           constants.defaultPadding / 2),
-                                //       child: Image.asset(
-                                //         'images/cancel.png',
-                                //         width: 8,
-                                //         height: 8,
-                                //         color: colorWhite,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // )
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              ),
+                                      // Align(
+                                      //   alignment: Alignment.topRight,
+                                      //   child: Card(
+                                      //     elevation: 0,
+                                      //     color: colorDark,
+                                      //     margin: const EdgeInsets.only(
+                                      //         bottom: constants.defaultPadding),
+                                      //     shape: RoundedRectangleBorder(
+                                      //       borderRadius: constants.borderRadius * 100,
+                                      //       // side: const BorderSide(
+                                      //       //     width: 0.2, color: colorSubHeadingText),
+                                      //     ),
+                                      //     child: Padding(
+                                      //       padding: const EdgeInsets.all(
+                                      //           constants.defaultPadding / 2),
+                                      //       child: Image.asset(
+                                      //         'images/cancel.png',
+                                      //         width: 8,
+                                      //         height: 8,
+                                      //         color: colorWhite,
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+              SizedBox(height: constants.defaultPadding*5,),
             ],
           ),
         ),

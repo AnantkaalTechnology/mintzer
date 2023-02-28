@@ -30,4 +30,6 @@ class DatabaseApi {
   static String updateOrderForm = "update-order-form"; //done
   static String updatePlayerId = "update-player-id"; // no need
   static String getAppVersion = "get-app-version"; // no need
+  static String cancelOldOrders = "cancel-old-orders"; // no need
+  static String getDealsNotes = "get-deals-notes"; // no need
 }

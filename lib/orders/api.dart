@@ -19,11 +19,11 @@ class OrderApi {
   static List<String> orderYouSpend = [];
   static List<String> orderStoreName = [];
   static List<String> orderTotalEarning = [];
+
   // static List<String> orderStatus = [];
   static List<String> orderMainId = [];
   static List<String> orderstoreTitle = [];
   static List<String> storeOrderIdList = [];
-
 
   static String storeOrderId = "";
   static String trackingId = "";
@@ -34,7 +34,10 @@ class OrderApi {
   static String isPayoutRequested = "";
   static String isPayout = "";
   static String storeTitle = "";
-
+  static String orderPhoneNumber = "";
+  static String orderStartTime = "";
+  static List<TextEditingController> controllerList =
+      List<TextEditingController>.empty(growable: true);
   static OrdersModel? ordersModel;
 
   static Future<void> getOrders(BuildContext context) async {
@@ -55,15 +58,16 @@ class OrderApi {
             context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
         return;
       }
-    ordersModel = ordersModelFromJson(value.data);
-
+      ordersModel = ordersModelFromJson(value.data);
     });
   }
 
   // static String orderMainId = "NA";
 
   static Future<void> getOrdersByOrderId(
-      BuildContext context, String orderId,) async {
+    BuildContext context,
+    String orderId,
+  ) async {
     final jsonData = {
       "auth_key": authKey,
       "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
@@ -91,11 +95,13 @@ class OrderApi {
       trackingId = jsonData["order_tracking_id"].toString();
       shippedOtp = jsonData["order_delivery_otp"].toString();
       deliveredStatus = jsonData["order_status"].toString();
-      orderDate = jsonData["date_time"].toString();
+      orderDate = jsonData["order_start"].toString();
       orderTransactionId = jsonData["transaction_id"].toString();
       isPayoutRequested = jsonData["is_payout_requested"].toString();
       storeTitle = jsonDataDeal["store_title"].toString();
       isPayout = jsonData["is_payout"].toString();
+      orderPhoneNumber = jsonData["account_mobile_number"].toString();
+      orderStartTime = jsonData["order_start"].toString();
       customPrint("storeOrderId :: $storeOrderId");
       customPrint("deliveredStatus :: $deliveredStatus");
       customPrint("orderDate :: $orderDate");
@@ -140,21 +146,25 @@ class OrderApi {
   }
 
   static Future<String> updateOrderForm(
-      BuildContext context,
-      String storeOrderId,
-      String orderTrackingId,
-      String orderCourierId,
-      String orderGst,
-      String orderDeliveryOtp,String orderId) async {
+    BuildContext context,
+    String storeOrderId,
+    String orderTrackingId,
+    String orderCourierId,
+    String orderGst,
+    String orderDeliveryOtp,
+    String orderId,
+    String orderPhoneNumber,
+  ) async {
     final jsonData = {
       "auth_key": authKey,
       "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
-      "store_order_id": storeOrderId,//-------1
-      "order_delivery_otp": orderDeliveryOtp,//--------3
-      "order_tracking_id": orderTrackingId,//----------2
+      "store_order_id": storeOrderId, //-------1
+      "order_delivery_otp": orderDeliveryOtp, //--------3
+      "order_tracking_id": orderTrackingId, //----------2
       "order_courier_id": orderCourierId,
       "order_gst": orderGst,
       "order_id": orderId,
+      "account_mobile_number": orderPhoneNumber,
     };
 
     customPrint("jsonData updateOrderForm :: $jsonData");

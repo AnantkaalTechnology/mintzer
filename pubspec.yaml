@@ -46,7 +46,6 @@ dependencies:
   url_launcher: ^6.0.9
   flutter_windowmanager: ^0.0.1+1
   lottie: ^1.2.2
-  animate_do: ^2.1.0
   get: ^4.6.5
   firebase_messaging: ^11.2.3
   flutter_local_notifications: ^9.2.0
@@ -60,6 +59,8 @@ dependencies:
   status_change: ^2.0.0
   im_stepper: ^1.0.1+1
   step_progress_indicator: ^1.0.2
+  animate_do: ^3.0.2
+
 
 
 
@@ -100,14 +101,19 @@ flutter:
     - images/wallet.png
     - images/ace_credit_card.jpg
     - images/sbi_card.jpg
+    - images/amazon.jpg
     - images/lineleft.png
     - images/lineright.png
+    - images/collabration.png
     - images/demophone.jpg
     - images/demophone2.png
     - images/backicon.png
     - images/contract.png
     - images/support.png
     - images/account.png
+    - images/searchcard.png
+    - images/notorder.png
+    - images/space.png
     - images/rightarrow.png
     - images/rightarrow1.png
     - images/rightarrow2.png
@@ -119,12 +125,14 @@ flutter:
     - images/home.png
     - images/panding.png
     - images/help.png
+    - images/cyber_security.png
     - images/profit.png
     - images/done.png
     - images/delivered.png
     - images/shipped.png
     - images/order.png
     - images/payment2.png
+    - images/support1.png
     - images/locked_card.png
     - images/logout.png
     - images/privacy.png

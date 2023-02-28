@@ -18,6 +18,7 @@ class HomeApi {
   static List<String> feedImage = [];
   static List<String> feedStatus = [];
   static List<String> feedDateTime = [];
+  static String dealsNotes = '';
 
   static Future<void> getFeeds(BuildContext context) async {
     final jsonData = {
@@ -52,6 +53,33 @@ class HomeApi {
         feedDateTime.add(jsonData[i]["date_time"].toString());
         feedStatus.add(jsonData[i]["status"].toString());
       }
+      customPrint("feed image : ${feedImage}");
+    });
+  }
+
+
+
+  ///-----------getDealsNotes-------------
+  static Future<void> getDealsNotes(BuildContext context) async {
+    final jsonData = {
+      "auth_key": authKey,
+      "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
+    };
+
+    customPrint("jsonData :: $jsonData");
+
+    return await Dio()
+        .post(DatabaseApi.mainUrl + DatabaseApi.getDealsNotes,
+            data: jsonEncode(jsonData))
+        .then((value) {
+      customPrint("getFeeds :: ${value.data}");
+      if (jsonDecode(value.data)["result"].toString() == "0") {
+        showSnackbar(
+            context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
+        return;
+      }
+       dealsNotes = jsonDecode(value.data)["data"][0]["notes"].toString();
+
     });
   }
 
@@ -116,6 +144,7 @@ class HomeApi {
   static List<String> dealOrderQuantity = [];
   static List<String> dealStatus = [];
   static List<String> dealStoreLogo = [];
+  static List<String> dealDiscount = [];
 
   static Future<void> getDealsByStores(BuildContext context) async {
     final jsonData = {
@@ -156,6 +185,7 @@ class HomeApi {
       dealOrderQuantity.clear();
       dealStatus.clear();
       dealStoreLogo.clear();
+      dealDiscount.clear();
       for (int i = 0; i < len; i++) {
         dealId.add(jsonData[i]["id"].toString());
         dealStoreId.add(jsonData[i]["store_id"].toString());
@@ -173,6 +203,7 @@ class HomeApi {
         dealTotalEarnings.add(jsonData[i]["total_earnings"].toString());
         dealOfferLink.add(jsonData[i]["offer_link"].toString());
         dealOrderQuantity.add(jsonData[i]["order_quantity"].toString());
+        dealDiscount.add(jsonData[i]["discount"].toString());
         dealStatus.add(jsonData[i]["deal_status"].toString());
         dealStoreLogo
             .add(DatabaseApi.imageUrl + jsonData[i]["store_logo"].toString());
@@ -500,7 +531,27 @@ class HomeApi {
     });
   }
 
-  ///cancel order
+  ///cancel old order
+  static Future<String> cancelOldOrders(
+      BuildContext context) async {
+    final jsonData = {
+      "auth_key": authKey,
+      "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
+    };
+
+    // customPrint("jsonDatacancel:: $jsonData");
+
+    return await Dio()
+        .get(DatabaseApi.mainUrl + DatabaseApi.cancelOldOrders)
+        .then((value) {
+      customPrint("cancelOldOrders :: ${value.data}");
+
+      return "0";
+    });
+  }
+
+
+
 
   ///Withdraw to bank account
   static Future<String> cancelOrder(

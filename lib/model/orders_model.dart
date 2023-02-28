@@ -69,6 +69,7 @@ class Order {
     required this.dateTime,
     required this.status,
     required this.storeName,
+    required this.discount,
   });
 
   DateTime orderEnd;
@@ -101,6 +102,7 @@ class Order {
   DateTime dateTime;
   String status;
   String storeName;
+  String discount;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     orderEnd: DateTime.parse(json["order_end"]),
@@ -133,6 +135,7 @@ class Order {
     dateTime: DateTime.parse(json["date_time"]),
     status: json["status"],
     storeName: json["store_name"],
+    discount: json["discount"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -166,5 +169,6 @@ class Order {
     "date_time": dateTime.toIso8601String(),
     "status": status,
     "store_name": storeName,
+    "discount": discount,
   };
 }

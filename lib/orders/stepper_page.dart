@@ -325,7 +325,7 @@ class _StepperPageState extends State<StepperPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "mintraz order id",
+                    "mintzer order id",
                     style:
                         textStyle.smallText.copyWith(color: colorHeadingText),
                   ),
@@ -407,7 +407,7 @@ class _StepperPageState extends State<StepperPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "mintraz order id",
+                    "mintzer order id",
                     style:
                         textStyle.smallText.copyWith(color: colorHeadingText),
                   ),
@@ -506,7 +506,7 @@ class _StepperPageState extends State<StepperPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "mintraz order id",
+                    "mintzer order id",
                     style:
                         textStyle.smallText.copyWith(color: colorHeadingText),
                   ),
@@ -636,7 +636,7 @@ class _StepperPageState extends State<StepperPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "mintraz order id",
+                    "mintzer order id",
                     style:
                         textStyle.smallText.copyWith(color: colorHeadingText),
                   ),

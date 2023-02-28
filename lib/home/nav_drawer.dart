@@ -46,10 +46,10 @@ class _NavDrawerState extends State<NavDrawer> {
           // ),
           DrawerHeader(
             decoration: BoxDecoration(
-              // color: colorDark,
+                color: colorbg1,
                 image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('images/bg.jpg'))),
+                    // fit: BoxFit.fill,
+                    image: AssetImage('images/logo.png'))),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,9 +60,11 @@ class _NavDrawerState extends State<NavDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("${UserDetails.firstName} ${UserDetails.lastName}",
-                            style: textStyle.subHeading.copyWith(color: Colors.white)),
+                            style: textStyle.subHeading
+                                .copyWith(color: Colors.white)),
                         Text(UserDetails.pan,
-                            style: textStyle.smallText.copyWith(color: Colors.white)),
+                            style: textStyle.smallText
+                                .copyWith(color: Colors.white)),
                       ],
                     ),
                     InkWell(
@@ -70,36 +72,37 @@ class _NavDrawerState extends State<NavDrawer> {
                         Navigator.pop(context);
                       },
                       child: Container(
-                        height: 44,
-                        width: 44,
+                        // height: 44,
+                        // width: 44,
                         decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.circular(
-                              constants.radius),
+                          borderRadius: BorderRadius.circular(constants.radius),
                           color: Colors.blue,
                         ),
-                        child: Image.asset(
-                          'images/backicon.png',
-                          color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(constants.defaultPadding/2),
+                          child: Icon(
+                            Icons.arrow_back_ios_new_outlined,
+                            size: 26,
+                            color: colorWhite,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: constants.defaultPadding,),
-
+                SizedBox(
+                  height: constants.defaultPadding,
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("₹${HomeApi.walletModel!.totalEarnings}",
-                      style: textStyle.subHeading.copyWith(
-                          color: Colors.white,
-                          fontSize: 33)),
+                  child: Text("₹${HomeApi.walletModel!.totalBalance}",
+                      style: textStyle.subHeading
+                          .copyWith(color: Colors.white, fontSize: 33)),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Wallet Balance",
-                      style: textStyle.smallText
-                          .copyWith(color: Colors.white)),
+                      style: textStyle.smallText.copyWith(color: Colors.white)),
                 ),
               ],
             ),
@@ -116,7 +119,7 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: Image.asset(
-              "images/support.png",
+              "images/support1.png",
               color: Colors.black,
               height: 20.h,
               width: 20.w,
@@ -132,9 +135,7 @@ class _NavDrawerState extends State<NavDrawer> {
               width: 20.w,
             ),
             title: Text('FAQ'),
-            onTap: () => {
-              nextPage(context, const FAQPage())
-            },
+            onTap: () => {nextPage(context, const FAQPage())},
           ),
           ListTile(
             leading: Image.asset(

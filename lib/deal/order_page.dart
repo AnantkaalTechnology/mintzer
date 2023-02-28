@@ -23,7 +23,8 @@ class OrderPage extends StatefulWidget {
       required this.productLink,
       required this.productDealId,
       required this.dealId,
-      required this.orderQuantity,  this.orderNow = false})
+      required this.orderQuantity,
+      this.orderNow = false,  this.desktopMode=false, required this.dealDiscount})
       : super(key: key);
 
   @override
@@ -41,7 +42,9 @@ class OrderPage extends StatefulWidget {
   final String productDealId;
   final String dealId;
   final String orderQuantity;
+  final String dealDiscount;
   final bool orderNow;
+  final bool desktopMode;
 }
 
 class _OrderPageState extends State<OrderPage> {
@@ -51,6 +54,7 @@ class _OrderPageState extends State<OrderPage> {
 
   bool showDetails = true;
   bool isDesktopMode = false;
+
   int _current = 0;
   final CarouselController _controller = CarouselController();
 
@@ -64,13 +68,12 @@ class _OrderPageState extends State<OrderPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.orderNow == false){
+    isDesktopMode = widget.desktopMode;
+    if (widget.orderNow == false) {
       HomeApi.createOrder(widget.dealId, context).then((value) {
-        setState(() {
-        });
+        setState(() {});
       });
     }
-
   }
 
   @override
@@ -85,22 +88,104 @@ class _OrderPageState extends State<OrderPage> {
                   horizontal: constants.defaultPadding,
                   vertical: constants.defaultPadding / 2),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.productTitle,
-                    style: textStyle.heading,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      showPopupOptions(context);
-                    },
-                    child: Image.asset(
-                      "images/more.png",
-                      height: 18,
-                      width: 18,
+                  Expanded(
+                    child: Text(
+                      widget.productTitle,
+                      style: textStyle.subHeading.copyWith(color: Colors.black),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  PopupMenuButton(
+                    onSelected: (value) {
+                      // your logic
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return  [
+                        PopupMenuItem(
+                          value: 'webview',
+                          onTap: () {
+                            // Navigator.pop(context);
+                            setState(() {
+                              isDesktopMode = !isDesktopMode;
+                              // loading = true;
+
+                            });
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) =>   OrderPage(
+                              productImage: widget.productImage,
+                              dealDiscount: widget.dealDiscount,
+                              productTitle: widget.productTitle,
+                              productOfferTitle: widget.productOfferTitle,
+                              productOfferText: widget.productOfferText,
+                              productYouSpend: widget.productYouSpend,
+                              productTotalEarn: widget.productTotalEarn,
+                              productCashback: widget.productCashback,
+                              productTotalReceive:
+                              widget.productTotalReceive,
+                              productLink: widget.productLink,
+                              productDealId: widget.productDealId,
+                              dealId: widget.dealId,
+                              orderQuantity: widget.orderQuantity,
+                              orderNow: true,
+                              desktopMode: isDesktopMode,
+                            )));
+                            // loadingTime();
+                          },
+                          child: Row(
+                            children: [
+                          Icon(
+                                  isDesktopMode
+                                      ? Icons.mobile_screen_share
+                                      : Icons.desktop_windows_rounded,
+                                  size: 22,
+                                  color: colorDark,
+                                ),
+                              Text(
+                                isDesktopMode ? "Mobile Mode" : "Desktop Mode",
+                                style: textStyle.subHeadingColorDark,
+                              ),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 'refresh',
+                          onTap: () {
+                            // Navigator.pop(context);
+                            setState(() {
+                              loading = true;
+                            });
+                            loadingTime();
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.refresh,
+                                size: 22,
+                                color: colorDark,
+                              ),
+                              Text(
+                                "Refresh Page",
+                                style: textStyle.subHeadingColorDark,
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ];
+                    },
+                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     showPopupOptions(context);
+                  //   },
+                  //   child: Image.asset(
+                  //     "images/more.png",
+                  //     height: 18,
+                  //     width: 18,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -111,7 +196,7 @@ class _OrderPageState extends State<OrderPage> {
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 100),
                     opacity: loading ? 0 : 1,
-                    child: isDesktopMode && false
+                    child: isDesktopMode
                         ? WebView(
                             userAgent:
                                 "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0",
@@ -141,10 +226,11 @@ class _OrderPageState extends State<OrderPage> {
               ),
             ),
             AnimatedContainer(
-              height: showDetails ? 206.h : 50.h,
+              height: showDetails ? 248.h : 50.h,
               width: MediaQuery.of(context).size.width,
               duration: const Duration(milliseconds: 222),
               decoration: BoxDecoration(
+                color: colorAccent1,
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(constants.radius),
                     topLeft: Radius.circular(constants.radius)),
@@ -182,13 +268,14 @@ class _OrderPageState extends State<OrderPage> {
                                 SizedBox(
                                   width: double.infinity,
                                   child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topRight:
-                                              Radius.circular(constants.radius),
-                                          topLeft: Radius.circular(
-                                              constants.radius)),
-                                    ),
+                                    color: colorAccent1,
+                                    // shape: RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.only(
+                                    //       topRight:
+                                    //           Radius.circular(constants.radius),
+                                    //       topLeft: Radius.circular(
+                                    //           constants.radius)),
+                                    // ),
                                     margin: EdgeInsets.zero,
                                     // color: colorDark,
                                     child: Padding(
@@ -218,16 +305,17 @@ class _OrderPageState extends State<OrderPage> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    detailsWidget("Model",
+                                                    detailsWidgetCard("Model",
                                                         widget.productTitle),
                                                     divider(),
-                                                    detailsWidget(
+                                                    detailsWidgetCard(
                                                         "Variant", "xxx"),
                                                     divider(),
-                                                    detailsWidget(
+                                                    detailsWidgetCard(
                                                         "Color", "xxx"),
                                                     divider(),
-                                                    detailsWidget("QTY", "1"),
+                                                    detailsWidgetCard(
+                                                        "QTY", "1"),
                                                   ],
                                                 ),
                                               ),
@@ -241,16 +329,18 @@ class _OrderPageState extends State<OrderPage> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    detailsWidget("Price",
+                                                    detailsWidgetCard("Price",
                                                         "${widget.productYouSpend} $rupeeSign"),
                                                     divider(),
-                                                    detailsWidget("Discount",
-                                                        "${widget.productCashback} $rupeeSign"),
+                                                    detailsWidgetCard(
+                                                        "Discount",
+                                                        "${checkNull(widget.dealDiscount,"0")} $rupeeSign"),
                                                     divider(),
-                                                    detailsWidget("Checkout",
+                                                    detailsWidgetCard(
+                                                        "Checkout",
                                                         "${widget.productTotalReceive} $rupeeSign"),
                                                     divider(),
-                                                    detailsWidget("Earn",
+                                                    detailsWidgetCard("Earn",
                                                         "${widget.productTotalEarn} $rupeeSign"),
                                                   ],
                                                 ),
@@ -263,15 +353,17 @@ class _OrderPageState extends State<OrderPage> {
                                   ),
                                 ),
                                 SizedBox(
+
                                   width: double.infinity,
                                   child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topRight:
-                                              Radius.circular(constants.radius),
-                                          topLeft: Radius.circular(
-                                              constants.radius)),
-                                    ),
+                                    // shape: RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.only(
+                                    //       topRight:
+                                    //           Radius.circular(constants.radius),
+                                    //       topLeft: Radius.circular(
+                                    //           constants.radius)),
+                                    // ),
+                                    color: colorAccent1,
                                     margin: EdgeInsets.zero,
                                     // color: colorDark,
                                     child: Padding(
@@ -352,13 +444,14 @@ class _OrderPageState extends State<OrderPage> {
                                 SizedBox(
                                   width: double.infinity,
                                   child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topRight:
-                                              Radius.circular(constants.radius),
-                                          topLeft: Radius.circular(
-                                              constants.radius)),
-                                    ),
+                                    color: colorAccent1,
+                                    // shape: RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.only(
+                                    //       topRight:
+                                    //           Radius.circular(constants.radius),
+                                    //       topLeft: Radius.circular(
+                                    //           constants.radius)),
+                                    // ),
                                     margin: EdgeInsets.zero,
                                     // color: colorDark,
                                     child: Padding(
@@ -414,6 +507,17 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                           ),
                         ),
+                        Visibility(
+                          visible: HomeApi.orderGst == "NA" || HomeApi.orderGst == "NIL" || HomeApi.orderGst == "" || HomeApi.orderGst.toString() == "null"   ? false : true,
+                          child: Padding(
+                            padding: const EdgeInsets.all(constants.defaultPadding/2),
+                            child: Text(
+                              "this is a GST order please copy and paste the gst number",
+                              style:
+                                  textStyle.smallText.copyWith(color: Colors.black,fontSize: 10.sp),
+                            ),
+                          ),
+                        ),
                         Container(
                           color: colorWhite,
                           height: 30.h,
@@ -423,7 +527,8 @@ class _OrderPageState extends State<OrderPage> {
                               Center(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: imgList.asMap().entries.map((entry) {
+                                  children:
+                                      imgList.asMap().entries.map((entry) {
                                     return GestureDetector(
                                       onTap: () =>
                                           _controller.animateToPage(entry.key),
@@ -437,25 +542,28 @@ class _OrderPageState extends State<OrderPage> {
                                                 constants.defaultPadding / 3),
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: (Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black)
-                                                .withOpacity(_current == entry.key
-                                                    ? 0.9
-                                                    : 0.4)),
+                                            color:
+                                                (Theme.of(context).brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black)
+                                                    .withOpacity(
+                                                        _current == entry.key
+                                                            ? 0.9
+                                                            : 0.4)),
                                       ),
                                     );
                                   }).toList(),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left:constants.defaultPadding,right: constants.defaultPadding ),
+                                padding: const EdgeInsets.only(
+                                    left: constants.defaultPadding,
+                                    right: constants.defaultPadding),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-
                                     Visibility(
                                       visible: _current == 0 ? false : true,
                                       child: InkWell(
@@ -475,14 +583,18 @@ class _OrderPageState extends State<OrderPage> {
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.all(
-                                                    constants.defaultPadding /2),
-                                                child:
-                                                Image.asset("images/leftarrow2.png",color: Colors.black,),
+                                                    constants.defaultPadding /
+                                                        2),
+                                                child: Image.asset(
+                                                  "images/leftarrow2.png",
+                                                  color: Colors.black,
+                                                ),
                                               ),
                                               Text(
                                                 getTextRight(),
                                                 style: textStyle.smallText
-                                                    .copyWith(color: Colors.black),
+                                                    .copyWith(
+                                                        color: Colors.black),
                                               ),
                                             ],
                                           ),
@@ -494,7 +606,8 @@ class _OrderPageState extends State<OrderPage> {
                                       child: InkWell(
                                         onTap: () {
                                           setState(() {
-                                            customPrint("_current :: $_current");
+                                            customPrint(
+                                                "_current :: $_current");
                                             _controller.nextPage();
                                             _current++;
                                           });
@@ -504,25 +617,24 @@ class _OrderPageState extends State<OrderPage> {
                                             Text(
                                               getText(),
                                               style: textStyle.smallText
-                                                  .copyWith(color: Colors.black),
+                                                  .copyWith(
+                                                      color: Colors.black),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(
-                                                  constants.defaultPadding /2),
-                                              child:
-                                              Image.asset("images/rightarrow2.png",color: Colors.black,),
+                                                  constants.defaultPadding / 2),
+                                              child: Image.asset(
+                                                "images/rightarrow2.png",
+                                                color: Colors.black,
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-
-
                                   ],
                                 ),
                               ),
-
-
                             ],
                           ),
                         )
@@ -565,6 +677,25 @@ class _OrderPageState extends State<OrderPage> {
       thickness: 0.2,
       color: show ? colorSubHeadingText : colorWhite,
       height: constants.defaultPadding * 1.5,
+    );
+  }
+
+  Widget detailsWidgetCard(String title, String value) {
+    return Row(
+      children: [
+        Text(
+          title == " " ? " " : "$title : ",
+          style: textStyle.smallTextColorDark.copyWith(color: colorHeadingText),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: textStyle.smallText.copyWith(color: colorHeadingText),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+      ],
     );
   }
 
@@ -616,78 +747,170 @@ class _OrderPageState extends State<OrderPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                onTap: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    loading = true;
-                  });
-                  loadingTime();
-                },
-                leading: const Icon(
-                  Icons.refresh,
-                  size: 22,
-                  color: colorDark,
+          content:PopupMenuButton(
+            onSelected: (value) {
+              // your logic
+            },
+            itemBuilder: (BuildContext bc) {
+              return  [
+                PopupMenuItem(
+                  value: '/hello',
+                  onTap: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      isDesktopMode = !isDesktopMode;
+                      // loading = true;
+
+                    });
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) =>   OrderPage(
+                      productImage: widget.productImage,
+                      dealDiscount: widget.dealDiscount,
+                      productTitle: widget.productTitle,
+                      productOfferTitle: widget.productOfferTitle,
+                      productOfferText: widget.productOfferText,
+                      productYouSpend: widget.productYouSpend,
+                      productTotalEarn: widget.productTotalEarn,
+                      productCashback: widget.productCashback,
+                      productTotalReceive:
+                      widget.productTotalReceive,
+                      productLink: widget.productLink,
+                      productDealId: widget.productDealId,
+                      dealId: widget.dealId,
+                      orderQuantity: widget.orderQuantity,
+                      orderNow: true,
+                      desktopMode: isDesktopMode,
+                    )));
+                    // loadingTime();
+                  },
+                  child: Row(
+                    children: [
+
+                      Text(
+                        isDesktopMode ? "Mobile Mode" : "Desktop Mode",
+                        style: textStyle.subHeadingColorDark,
+                      ),
+                    ],
+                  ),
                 ),
-                title: Text(
-                  "Refresh Page",
-                  style: textStyle.subHeadingColorDark,
+                PopupMenuItem(
+                  value: '/about',
+                  onTap: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      loading = true;
+                    });
+                    loadingTime();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.refresh,
+                        size: 22,
+                        color: colorDark,
+                      ),
+                      Text(
+                        "Refresh Page",
+                        style: textStyle.subHeadingColorDark,
+                      ),
+                    ],
+                  ),
                 ),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 12,
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    isDesktopMode = !isDesktopMode;
-                    loading = true;
-                  });
-                  loadingTime();
-                },
-                leading: Icon(
-                  isDesktopMode
-                      ? Icons.mobile_screen_share
-                      : Icons.desktop_windows_rounded,
-                  size: 22,
-                  color: colorDark,
-                ),
-                title: Text(
-                  isDesktopMode ? "Mobile Mode" : "Desktop Mode",
-                  style: textStyle.subHeadingColorDark,
-                ),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 12,
-                ),
-              ),
-            ],
+
+              ];
+            },
           ),
+
+
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     ListTile(
+          //       onTap: () {
+          //         Navigator.pop(context);
+          //         setState(() {
+          //           loading = true;
+          //         });
+          //         loadingTime();
+          //       },
+          //       leading: const Icon(
+          //         Icons.refresh,
+          //         size: 22,
+          //         color: colorDark,
+          //       ),
+          //       title: Text(
+          //         "Refresh Page",
+          //         style: textStyle.subHeadingColorDark,
+          //       ),
+          //       trailing: const Icon(
+          //         Icons.arrow_forward_ios_rounded,
+          //         size: 12,
+          //       ),
+          //     ),
+          //     ListTile(
+          //       onTap: () {
+          //         Navigator.pop(context);
+          //         setState(() {
+          //           isDesktopMode = !isDesktopMode;
+          //           // loading = true;
+          //
+          //         });
+          //         Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) =>   OrderPage(
+          //           productImage: widget.productImage,
+          //           dealDiscount: widget.dealDiscount,
+          //           productTitle: widget.productTitle,
+          //           productOfferTitle: widget.productOfferTitle,
+          //           productOfferText: widget.productOfferText,
+          //           productYouSpend: widget.productYouSpend,
+          //           productTotalEarn: widget.productTotalEarn,
+          //           productCashback: widget.productCashback,
+          //           productTotalReceive:
+          //           widget.productTotalReceive,
+          //           productLink: widget.productLink,
+          //           productDealId: widget.productDealId,
+          //           dealId: widget.dealId,
+          //           orderQuantity: widget.orderQuantity,
+          //           orderNow: true,
+          //           desktopMode: isDesktopMode,
+          //         )));
+          //         // loadingTime();
+          //       },
+          //       leading: Icon(
+          //         isDesktopMode
+          //             ? Icons.mobile_screen_share
+          //             : Icons.desktop_windows_rounded,
+          //         size: 22,
+          //         color: colorDark,
+          //       ),
+          //       title: Text(
+          //         isDesktopMode ? "Mobile Mode" : "Desktop Mode",
+          //         style: textStyle.subHeadingColorDark,
+          //       ),
+          //       trailing: const Icon(
+          //         Icons.arrow_forward_ios_rounded,
+          //         size: 12,
+          //       ),
+          //     ),
+          //   ],
+          // ),
         );
       },
     );
   }
 
   String getText() {
-    if(_current == 0)
-      {
-        return "User detail";
-      }else if (_current == 1){
+    if (_current == 0) {
+      return "Address detail";
+    } else if (_current == 1) {
       return "GST detail";
     }
     return "";
   }
+
   String getTextRight() {
-    if(_current == 2)
-      {
-        return "User detail";
-      }else if (_current == 1){
+    if (_current == 2) {
+      return "Address detail";
+    } else if (_current == 1) {
       return "Product detail";
     }
     return "";

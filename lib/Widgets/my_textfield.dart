@@ -17,7 +17,7 @@ class MyTextFiled extends StatelessWidget {
     this.margin,
     this.maxLine,
     this.onChange,
-    this.height = 0,
+    this.height = 0, this.suffixIcon,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -26,6 +26,7 @@ class MyTextFiled extends StatelessWidget {
   final inputType;
   final margin;
   final int? maxLine;
+  final suffixIcon;
   final Function(String)? onChange;
   final double height;
 
@@ -60,9 +61,11 @@ class MyTextFiled extends StatelessWidget {
             },
             decoration: InputDecoration(
               hintText: hint,
+              suffixIcon: suffixIcon,
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(constants.radius),
+
                 borderSide: BorderSide(
                   color: colorDark,
                 ),
