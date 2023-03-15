@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:mintzer/Widgets/my_textfield.dart';
 import 'package:mintzer/Widgets/new_button.dart';
 import 'package:mintzer/Widgets/progressHud.dart';
@@ -92,13 +91,24 @@ class _LoginPageState extends State<LoginPage> {
                                 top: constants.defaultPadding * 2,
                                 left: constants.defaultPadding,
                                 right: constants.defaultPadding),
-                            function: () {
+                            function: () async {
+                              final status =
+                                  await OneSignal.shared.getDeviceState();
+                              final String? osUserID = status?.userId;
+
+                              await prefs.setString(
+                                  LocalStorage.oneSignalUserToken,
+                                  osUserID.toString());
+
+                              customPrint("osUserID :: $osUserID");
+
                               if (_formKey.currentState!.validate()) {
                                 setState(() {
                                   loading = true;
                                 });
                                 AuthApi.loginUser(
-                                        phoneNumberController.text.trim())
+                                        phoneNumberController.text.trim(),
+                                        osUserID.toString())
                                     .then((value) {
                                   customPrint("loginUser :: $value");
                                   setState(() {
@@ -108,7 +118,12 @@ class _LoginPageState extends State<LoginPage> {
                                     nextPage(context, OTPPage(jsonData: value));
                                   } else if (value['result'].toString() ==
                                       "3") {
-                                    nextPage(context, SignUpPage(phoneNumber: phoneNumberController.text.trim(),));
+                                    nextPage(
+                                        context,
+                                        SignUpPage(
+                                          phoneNumber:
+                                              phoneNumberController.text.trim(),
+                                        ));
                                   } else {
                                     showSnackbar(
                                         context, value['msg'], colorError);

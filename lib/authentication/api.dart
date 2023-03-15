@@ -6,11 +6,11 @@ import 'package:mintzer/globalVariable.dart';
 import 'package:mintzer/util/constants.dart';
 
 class AuthApi {
-  static Future<Map<String, dynamic>> loginUser(String number) async {
+  static Future<Map<String, dynamic>> loginUser(String number, playerId) async {
     final jsonData = {
       "auth_key": authKey,
       "mobile_number": number,
-      "player_id": ""
+      "player_id": playerId
     };
 
     return await Dio()
@@ -39,13 +39,14 @@ class AuthApi {
     });
   }
 
-  static Future<Map<String, dynamic>> userRegister(
-      String firstName, String lastName, String phoneNumber, String pan) async {
+  static Future<Map<String, dynamic>> userRegister(String firstName,
+      String lastName, String phoneNumber, String pan, String playerId) async {
     final jsonData = {
       "auth_key": authKey,
       "first_name": firstName,
       "last_name": lastName,
       "mobile_number": phoneNumber,
+      "player_id": playerId,
       "pan": pan
     };
 

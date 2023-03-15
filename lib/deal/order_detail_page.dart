@@ -1,9 +1,7 @@
 // import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:mintzer/Widgets/new_button.dart';
 import 'package:mintzer/Widgets/progressHud.dart';
 import 'package:mintzer/deal/deal_note.dart';
@@ -12,10 +10,8 @@ import 'package:mintzer/feed/support_page.dart';
 import 'package:mintzer/globalVariable.dart';
 import 'package:mintzer/home/api.dart';
 import 'package:mintzer/home/home_page.dart';
-
 // import 'package:mintzer/model/orders_model.dart';
 import 'package:mintzer/orders/api.dart';
-
 // import 'package:mintzer/orders/step_progress_bar.dart';
 // import 'package:mintzer/orders/stepper_page.dart';
 import 'package:mintzer/util/colors.dart';
@@ -40,7 +36,9 @@ class OrderDetailPage extends StatefulWidget {
     this.orderPage = 0,
     this.orderPayment = 0,
     required this.orderId,
-    required this.dealerPrice, required this.dealDiscount,
+    required this.dealerPrice,
+    required this.dealDiscount,
+    required this.productPrice,
   }) : super(key: key);
 
   @override
@@ -63,6 +61,7 @@ class OrderDetailPage extends StatefulWidget {
   final String orderId;
   final String dealerPrice;
   final String dealDiscount;
+  final String productPrice;
 }
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
@@ -102,11 +101,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   @override
   void initState() {
-
     HomeApi.getDealsNotes(context).then((value) {
-      setState(() {
-
-      });
+      setState(() {});
     });
 
     if (widget.orderId != "") {
@@ -602,13 +598,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       decoration: BoxDecoration(
                                           color: OrderApi.isPayout == "1"
                                               ? colorDark
-                                              : steps == 4  &&      OrderApi.isPayout == "0"
+                                              : steps == 4 &&
+                                                      OrderApi.isPayout == "0"
                                                   ? colorWarning
                                                   : colorSubHeadingText,
                                           border: Border.all(
                                             color: OrderApi.isPayout == "1"
                                                 ? colorDark
-                                                : steps == 4 &&      OrderApi.isPayout == "0"
+                                                : steps == 4 &&
+                                                        OrderApi.isPayout == "0"
                                                     ? colorWarning
                                                     : colorSubHeadingText,
                                           ),
@@ -703,9 +701,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       ),
                                       detailsWidgetCard(
                                           "Color : ", "Any Color"),
-                                      detailsWidgetCard("Quantity : ", "1"),
-                                      detailsWidgetCard("Price/Unit : ",
-                                          "Rs.${widget.dealerPrice}"),
+                                      detailsWidgetCard(
+                                          "Quantity : ", widget.orderQuantity),
+                                      detailsWidgetCard(
+                                          "Price/Unit : ",
+                                          // "Rs.${19010}"),
+                                          "Rs.${widget.productPrice}"),
                                     ],
                                   ),
                                 ),
@@ -744,47 +745,57 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               child: NewButton(
                                 context: context,
                                 function: () {
-                                  widget.orderPage == 0 ?  nextPage(
-                                      context,
-                                      DealNotePage(
-                                        dealNotes: HomeApi.dealsNotes,
-                                        dealDiscount: widget.dealDiscount,
-                                        productImage: widget.productImage,
-                                        productTitle: widget.productTitle,
-                                        productOfferTitle:
-                                        widget.productOfferTitle,
-                                        productOfferText:
-                                        widget.productOfferText,
-                                        productYouSpend: widget.productYouSpend,
-                                        productTotalEarn:
-                                        widget.productTotalEarn,
-                                        productCashback: widget.productCashback,
-                                        productTotalReceive:
-                                        widget.productTotalReceive,
-                                        productLink: widget.productLink,
-                                        productDealId: widget.productDealId,
-                                        dealId: widget.dealId,
-                                        orderQuantity: widget.orderQuantity,
-                                      )) :  nextPage(
-                                      context,
-                                      OrderPage(
-                                        dealDiscount: widget.dealDiscount,
-                                        productImage: widget.productImage,
-                                        productTitle: widget.productTitle,
-                                        productOfferTitle: widget.productOfferTitle,
-                                        productOfferText: widget.productOfferText,
-                                        productYouSpend: widget.productYouSpend,
-                                        productTotalEarn: widget.productTotalEarn,
-                                        productCashback: widget.productCashback,
-                                        productTotalReceive:
-                                        widget.productTotalReceive,
-                                        productLink: widget.productLink,
-                                        productDealId: widget.productDealId,
-                                        dealId: widget.dealId,
-                                        orderQuantity: widget.orderQuantity,
-                                        orderNow: true,
-                                      ));
-
+                                  widget.orderPage == 0
+                                      ? nextPage(
+                                          context,
+                                          DealNotePage(
+                                            dealNotes: HomeApi.dealsNotes,
+                                            dealDiscount: widget.dealDiscount,
+                                            productImage: widget.productImage,
+                                            productTitle: widget.productTitle,
+                                            productOfferTitle:
+                                                widget.productOfferTitle,
+                                            productOfferText:
+                                                widget.productOfferText,
+                                            productYouSpend:
+                                                widget.productYouSpend,
+                                            productTotalEarn:
+                                                widget.productTotalEarn,
+                                            productCashback:
+                                                widget.productCashback,
+                                            productTotalReceive:
+                                                widget.productTotalReceive,
+                                            productLink: widget.productLink,
+                                            productDealId: widget.productDealId,
+                                            dealId: widget.dealId,
+                                            orderQuantity: widget.orderQuantity,
+                                            productPrice: widget.productPrice,
+                                          ))
+                                      : nextPage(
+                                          context,
+                                          OrderPage(
+                                            dealDiscount: widget.dealDiscount,
+                                            productImage: widget.productImage,
+                                            productTitle: widget.productTitle,
+                                            productOfferTitle:
+                                                widget.productOfferTitle,
+                                            productOfferText:
+                                                widget.productOfferText,
+                                            productYouSpend:
+                                                widget.productYouSpend,
+                                            productTotalEarn:
+                                                widget.productTotalEarn,
+                                            productCashback:
+                                                widget.productCashback,
+                                            productTotalReceive:
+                                                widget.productTotalReceive,
+                                            productLink: widget.productLink,
+                                            productDealId: widget.productDealId,
+                                            dealId: widget.dealId,
+                                            productPrice: widget.productPrice,
+                                            orderQuantity: widget.orderQuantity,
+                                            orderNow: true,
+                                          ));
                                 },
                                 buttonText: "Place Order",
                               ),
@@ -899,7 +910,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Total price",
@@ -916,7 +928,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: constants.defaultPadding/2,
+                                      height: constants.defaultPadding / 2,
                                     ),
                                     // Text(
                                     //   "-",
@@ -926,7 +938,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Discount ",
@@ -935,7 +948,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "- $rupeeSign${checkNull(widget.dealDiscount,"0")}",
+                                          "- $rupeeSign${checkNull(widget.dealDiscount, "0")}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -943,7 +956,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: constants.defaultPadding/2,
+                                      height: constants.defaultPadding / 2,
                                     ),
                                     // Text(
                                     //   "-",
@@ -952,8 +965,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     // ),
                                     Row(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Cash back",
@@ -962,7 +976,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "- $rupeeSign${checkNull(widget.productCashback,"0")}",
+                                          "- $rupeeSign${checkNull(widget.productCashback, "0")}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -976,24 +990,26 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     ),
                                     Row(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Total you'll spend",
-                                          style: textStyle.smallTextColorDark.copyWith(
-                                              color: Colors.black,
-                                              fontSize: 10.sp),
+                                          style: textStyle.smallTextColorDark
+                                              .copyWith(
+                                                  color: Colors.black,
+                                                  fontSize: 10.sp),
                                         ),
                                         Text(
                                           "$rupeeSign${youWillSpend()}",
-                                          style: textStyle.smallTextColorDark.copyWith(
-                                              color: Colors.black,
-                                              fontSize: 10.sp),
+                                          style: textStyle.smallTextColorDark
+                                              .copyWith(
+                                                  color: Colors.black,
+                                                  fontSize: 10.sp),
                                         ),
                                       ],
                                     ),
-
                                   ],
                                 ),
                               ],
@@ -1046,7 +1062,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "spend",
@@ -1063,7 +1080,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: constants.defaultPadding/2,
+                                      height: constants.defaultPadding / 2,
                                     ),
                                     // Text(
                                     //   "+",
@@ -1073,7 +1090,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "cash reward",
@@ -1090,12 +1108,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       ],
                                     ),
                                     const SizedBox(
-                                      height: constants.defaultPadding/2,
+                                      height: constants.defaultPadding / 2,
                                     ),
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Cash back",
@@ -1104,7 +1123,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                               fontSize: 10.sp),
                                         ),
                                         Text(
-                                          "- $rupeeSign${checkNull(widget.productCashback,"0")}",
+                                          "- $rupeeSign${checkNull(widget.productCashback, "0")}",
                                           style: textStyle.smallText.copyWith(
                                               color: Colors.black,
                                               fontSize: 10.sp),
@@ -1118,20 +1137,23 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     ),
                                     Row(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           "Total you'll receive",
-                                          style: textStyle.smallTextColorDark.copyWith(
-                                              color: Colors.black,
-                                              fontSize: 10.sp),
+                                          style: textStyle.smallTextColorDark
+                                              .copyWith(
+                                                  color: Colors.black,
+                                                  fontSize: 10.sp),
                                         ),
                                         Text(
                                           "$rupeeSign${youWillReceive()}",
-                                          style: textStyle.smallTextColorDark.copyWith(
-                                              color: Colors.black,
-                                              fontSize: 10.sp),
+                                          style: textStyle.smallTextColorDark
+                                              .copyWith(
+                                                  color: Colors.black,
+                                                  fontSize: 10.sp),
                                         ),
                                       ],
                                     ),
@@ -1191,37 +1213,45 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                               Column(
                                 children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "Cash reward",
                                         style: textStyle.smallText.copyWith(
-                                            color: Colors.black, fontSize: 10.sp),
+                                            color: Colors.black,
+                                            fontSize: 10.sp),
                                       ),
                                       Text(
                                         "$rupeeSign${widget.productTotalEarn}",
                                         style: textStyle.smallText.copyWith(
-                                            color: Colors.black, fontSize: 10.sp),
+                                            color: Colors.black,
+                                            fontSize: 10.sp),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: constants.defaultPadding/2,
+                                    height: constants.defaultPadding / 2,
                                   ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "Cash back",
                                         style: textStyle.smallText.copyWith(
-                                            color: Colors.black, fontSize: 10.sp),
+                                            color: Colors.black,
+                                            fontSize: 10.sp),
                                       ),
                                       Text(
-                                        "$rupeeSign${checkNull(widget.productCashback,"0")}",
+                                        "$rupeeSign${checkNull(widget.productCashback, "0")}",
                                         style: textStyle.smallText.copyWith(
-                                            color: Colors.black, fontSize: 10.sp),
+                                            color: Colors.black,
+                                            fontSize: 10.sp),
                                       ),
                                     ],
                                   ),
@@ -1232,20 +1262,23 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   ),
                                   Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         "Total earnings",
-                                        style: textStyle.smallTextColorDark.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 10.sp),
+                                        style: textStyle.smallTextColorDark
+                                            .copyWith(
+                                                color: Colors.black,
+                                                fontSize: 10.sp),
                                       ),
                                       Text(
                                         "$rupeeSign${youWillTotalEarn()}",
-                                        style: textStyle.smallTextColorDark.copyWith(
-                                            color: Colors.black,
-                                            fontSize: 10.sp),
+                                        style: textStyle.smallTextColorDark
+                                            .copyWith(
+                                                color: Colors.black,
+                                                fontSize: 10.sp),
                                       ),
                                     ],
                                   ),
@@ -1552,8 +1585,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               value: 1,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  colorDark))),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(colorDark))),
                       Text(
                         "${getPendingTime()}:00",
                         style: textStyle.smallText.copyWith(color: colorDark),
@@ -1638,6 +1671,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                   productLink: widget.productLink,
                                   productDealId: widget.productDealId,
                                   dealId: widget.dealId,
+                                  productPrice: widget.productPrice,
                                   orderQuantity: widget.orderQuantity,
                                   orderNow: true,
                                 ));
@@ -1812,7 +1846,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       setState(() {
                         trackingValidation = true;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         trackingValidation = false;
                       });
@@ -1824,7 +1858,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       setState(() {
                         trackingValidation = true;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         trackingValidation = false;
                       });
@@ -1836,7 +1870,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       setState(() {
                         trackingValidation = true;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         trackingValidation = false;
                       });
@@ -1848,7 +1882,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       setState(() {
                         trackingValidation = true;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         trackingValidation = false;
                       });
@@ -1860,19 +1894,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       setState(() {
                         trackingValidation = true;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         trackingValidation = false;
                       });
                     }
-                  } else{
+                  } else {
                     if (value.trim().length > 9) {
                       // customPrint("Valid Data Bluedart");
 
                       setState(() {
                         trackingValidation = true;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         trackingValidation = false;
                       });
@@ -2088,10 +2122,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 "Delivery Support",
                 style: textStyle.smallText.copyWith(color: colorHeadingText),
               ),
-
             ],
           ),
-
           Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
@@ -2157,8 +2189,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           Text(
             "All your information are encrypted",
             style: textStyle.smallText.copyWith(
-                color: colorSuccess,
-                decoration: TextDecoration.underline),
+                color: colorSuccess, decoration: TextDecoration.underline),
           ),
           const SizedBox(
             height: constants.defaultPadding,
@@ -2395,7 +2426,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       width: constants.defaultPadding / 3,
                     ),
                     GestureDetector(
-
                       child: Text(
                         "Edit",
                         style: textStyle.smallTextColorDark.copyWith(
@@ -2622,8 +2652,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(value == 1 ?
-                  "Update Tracking ID" : value ==2 ? "Update Order Phone Number" : "${OrderApi.storeTitle} order",
+                Text(
+                  value == 1
+                      ? "Update Tracking ID"
+                      : value == 2
+                          ? "Update Order Phone Number"
+                          : "${OrderApi.storeTitle} order",
                   style: textStyle.subHeading.copyWith(color: colorHeadingText),
                 ),
                 SizedBox(
@@ -2810,7 +2844,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 
   String getPendingTime() {
-    if(OrderApi.orderStartTime.isEmpty){
+    if (OrderApi.orderStartTime.isEmpty) {
       return "45";
     }
     String year = OrderApi.orderStartTime.split(" ")[0].split("-")[0];
@@ -2843,26 +2877,20 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     // return "00";
   }
 
-
-
   String cashBackForUser() {
-    if(widget.productCashback == "null"){
+    if (widget.productCashback == "null") {
       return "0";
     }
-
 
     return widget.productCashback;
 
     // return "00";
   }
 
-
-
   String youWillSpend() {
-
-    int totalPriceForUser = int.tryParse(widget.dealerPrice)??0;
-    int discountForUser =int.tryParse( widget.dealDiscount)??0;
-    int cashbackPriceForUser = int.tryParse(widget.productCashback)??0 ;
+    int totalPriceForUser = int.tryParse(widget.dealerPrice) ?? 0;
+    int discountForUser = int.tryParse(widget.dealDiscount) ?? 0;
+    int cashbackPriceForUser = int.tryParse(widget.productCashback) ?? 0;
     int sum = totalPriceForUser - discountForUser - cashbackPriceForUser;
 
     return "${sum}";
@@ -2870,12 +2898,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     // return "00";
   }
 
-
   String youWillReceive() {
-
-    int youWillSpend = int.tryParse(widget.productYouSpend)??0;
-    int cashRewardYou =int.tryParse( widget.productTotalEarn)??0;
-    int cashbackPriceForUser = int.tryParse(widget.productCashback)??0 ;
+    int youWillSpend = int.tryParse(widget.productYouSpend) ?? 0;
+    int cashRewardYou = int.tryParse(widget.productTotalEarn) ?? 0;
+    int cashbackPriceForUser = int.tryParse(widget.productCashback) ?? 0;
 
     int sum = youWillSpend + cashRewardYou + cashbackPriceForUser;
 
@@ -2884,11 +2910,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     // return "00";
   }
 
-
   String youWillTotalEarn() {
-
-    int cashRewardYou =int.tryParse( widget.productTotalEarn)??0;
-    int cashbackPriceForUser = int.tryParse(widget.productCashback)??0 ;
+    int cashRewardYou = int.tryParse(widget.productTotalEarn) ?? 0;
+    int cashbackPriceForUser = int.tryParse(widget.productCashback) ?? 0;
 
     int sum = cashRewardYou + cashbackPriceForUser;
 

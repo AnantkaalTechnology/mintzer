@@ -22,7 +22,10 @@ class DealNotePage extends StatefulWidget {
       required this.productLink,
       required this.productDealId,
       required this.dealId,
-      required this.orderQuantity, required this.dealDiscount, required this.dealNotes})
+      required this.orderQuantity,
+      required this.dealDiscount,
+      required this.dealNotes,
+      required this.productPrice})
       : super(key: key);
 
   @override
@@ -40,6 +43,7 @@ class DealNotePage extends StatefulWidget {
   final String productDealId;
   final String dealId;
   final String orderQuantity;
+  final String productPrice;
   final String dealDiscount;
   final String dealNotes;
 }
@@ -74,7 +78,8 @@ class _DealNotePageState extends State<DealNotePage> {
                       alignment: Alignment.topLeft,
                       child: Text(
                         widget.dealNotes,
-                        style: textStyle.subHeading.copyWith(color: colorHeadingText),
+                        style: textStyle.subHeading
+                            .copyWith(color: colorHeadingText),
                       ),
                     ),
                     // Text(
@@ -106,7 +111,7 @@ class _DealNotePageState extends State<DealNotePage> {
                         nextPage(
                             context,
                             OrderPage(
-                              dealDiscount:widget.dealDiscount,
+                              dealDiscount: widget.dealDiscount,
                               productImage: widget.productImage,
                               productTitle: widget.productTitle,
                               productOfferTitle: widget.productOfferTitle,
@@ -119,6 +124,7 @@ class _DealNotePageState extends State<DealNotePage> {
                               productDealId: widget.productDealId,
                               dealId: widget.dealId,
                               orderQuantity: widget.orderQuantity,
+                              productPrice: widget.productPrice,
                             ));
                       },
                       buttonText: "PROCEED",

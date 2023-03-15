@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:mintzer/Widgets/my_textfield.dart';
 import 'package:mintzer/Widgets/new_button.dart';
 import 'package:mintzer/Widgets/progressHud.dart';
+import 'package:mintzer/api/local_storage.dart';
 import 'package:mintzer/authentication/api.dart';
 import 'package:mintzer/authentication/login_page.dart';
 import 'package:mintzer/globalVariable.dart';
+import 'package:mintzer/main.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../util/colors.dart';
 import 'otppage.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key,  this.phoneNumber = "NA"}) : super(key: key);
+  const SignUpPage({Key? key, this.phoneNumber = "NA"}) : super(key: key);
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
 
   final String phoneNumber;
-
 }
 
 class _SignUpPageState extends State<SignUpPage> {
@@ -35,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.phoneNumber != "NA"){
+    if (widget.phoneNumber != "NA") {
       mobileNumberController.text = widget.phoneNumber;
     }
   }
@@ -65,7 +67,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   MyTextFiled(
                       controller: firstNameController, hint: "First Name"),
-                  MyTextFiled(controller: lastNameController, hint: "Last Name"),
+                  MyTextFiled(
+                      controller: lastNameController, hint: "Last Name"),
                   MyTextFiled(
                       controller: panCardNumberController, hint: "Pan Number"),
                   MyTextFiled(
@@ -113,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         right: constants.defaultPadding,
                         top: constants.defaultPadding),
                     context: context,
-                    function: () {
+                    function: () async {
                       if (_signKey.currentState!.validate()) {
                         if (firstNameController.text.trim().isEmpty) {
                           showSnackbar(
@@ -132,7 +135,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         return;
                       }
 
-
                       if (!isChecked) {
                         showSnackbar(context,
                             "Please check our terms and condition", colorError);
@@ -143,11 +145,22 @@ class _SignUpPageState extends State<SignUpPage> {
                         loading = true;
                       });
 
+                      final status = await OneSignal.shared.getDeviceState();
+                      final String? osUserID = status?.userId;
+
+                      await prefs.setString(
+                          LocalStorage.oneSignalUserToken, osUserID.toString());
+
+                      customPrint("osUserID :: $osUserID");
+
+                      return;
+
                       AuthApi.userRegister(
                               firstNameController.text.trim(),
                               lastNameController.text.trim(),
                               mobileNumberController.text.trim(),
-                              panCardNumberController.text.trim())
+                              panCardNumberController.text.trim(),
+                              osUserID.toString())
                           .then((value) {
                         customPrint("loginUser :: $value");
                         if (value['result'].toString() == "1") {

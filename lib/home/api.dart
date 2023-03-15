@@ -57,8 +57,6 @@ class HomeApi {
     });
   }
 
-
-
   ///-----------getDealsNotes-------------
   static Future<void> getDealsNotes(BuildContext context) async {
     final jsonData = {
@@ -78,8 +76,7 @@ class HomeApi {
             context, "Error : ${jsonDecode(value.data)["msg"]}", colorError);
         return;
       }
-       dealsNotes = jsonDecode(value.data)["data"][0]["notes"].toString();
-
+      dealsNotes = jsonDecode(value.data)["data"][0]["notes"].toString();
     });
   }
 
@@ -142,6 +139,7 @@ class HomeApi {
   static List<String> dealYouReceive = [];
   static List<String> dealOfferLink = [];
   static List<String> dealOrderQuantity = [];
+  static List<String> dealProductPrice = [];
   static List<String> dealStatus = [];
   static List<String> dealStoreLogo = [];
   static List<String> dealDiscount = [];
@@ -183,6 +181,7 @@ class HomeApi {
       dealYouReceive.clear();
       dealOfferLink.clear();
       dealOrderQuantity.clear();
+      dealProductPrice.clear();
       dealStatus.clear();
       dealStoreLogo.clear();
       dealDiscount.clear();
@@ -198,6 +197,7 @@ class HomeApi {
         dealOfferText.add(jsonData[i]["offer_text"].toString());
         dealerPrice.add(jsonData[i]["dealers_price"].toString());
         dealYouSpend.add(jsonData[i]["you_will_spend"].toString());
+        dealProductPrice.add(jsonData[i]["product_price"].toString());
         dealCashback.add(jsonData[i]["cashback"].toString());
         dealYouReceive.add(jsonData[i]["total_you_will_receive"].toString());
         dealTotalEarnings.add(jsonData[i]["total_earnings"].toString());
@@ -407,7 +407,6 @@ class HomeApi {
 
     customPrint("jsonData :: $jsonData");
 
-
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.updateBankCard,
             data: jsonEncode(jsonData))
@@ -432,9 +431,7 @@ class HomeApi {
   // // static String walletOrderId = "";
   // static String walletUserTotalEarnings = "NA";
 
-
   static WalletModel? walletModel;
-
 
   static List<String> walletOrderId = [];
 
@@ -445,7 +442,6 @@ class HomeApi {
     };
 
     customPrint("jsonData :: $jsonData");
-
 
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.getWalletDetails,
@@ -471,11 +467,8 @@ class HomeApi {
       // walletTotalEarnings = jsonData["total_earnings"].toString();
       // walletBalance = jsonData["wallet"].toString();
 
-
       // walletOrderId = orderJsonData["order_id"].toString();
       ///array ko ke liye kya likhne ka idher yah ise hi call ho jata hai?
-
-
 
       // walletUserTotalEarnings = jsonData["total_earnings"].toString();
 
@@ -532,8 +525,7 @@ class HomeApi {
   }
 
   ///cancel old order
-  static Future<String> cancelOldOrders(
-      BuildContext context) async {
+  static Future<String> cancelOldOrders(BuildContext context) async {
     final jsonData = {
       "auth_key": authKey,
       "user_auth": prefs.getString(LocalStorage.userAuth) ?? "",
@@ -550,9 +542,6 @@ class HomeApi {
     });
   }
 
-
-
-
   ///Withdraw to bank account
   static Future<String> cancelOrder(
       BuildContext context, String orderId) async {
@@ -566,7 +555,7 @@ class HomeApi {
 
     return await Dio()
         .post(DatabaseApi.mainUrl + DatabaseApi.cancelOrder,
-        data: jsonEncode(jsonData))
+            data: jsonEncode(jsonData))
         .then((value) {
       customPrint("cancelOrder :: ${value.data}");
       if (jsonDecode(value.data)["result"].toString() == "0") {
@@ -577,13 +566,10 @@ class HomeApi {
       final jsonData = jsonDecode(value.data)["orders"];
       int len = getJsonLength(jsonData);
       customPrint("len :: $len");
-      showSnackbar(
-          context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
+      showSnackbar(context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
       return "1";
     });
   }
-
-
 
   ///Withdraw to bank account
   static Future<String> withdrawalRequests(
@@ -609,8 +595,7 @@ class HomeApi {
       final jsonData = jsonDecode(value.data)["orders"];
       int len = getJsonLength(jsonData);
       customPrint("len :: $len");
-      showSnackbar(
-          context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
+      showSnackbar(context, "${jsonDecode(value.data)["msg"]}", colorSuccess);
       return "1";
     });
   }

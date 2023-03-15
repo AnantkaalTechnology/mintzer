@@ -24,7 +24,10 @@ class OrderPage extends StatefulWidget {
       required this.productDealId,
       required this.dealId,
       required this.orderQuantity,
-      this.orderNow = false,  this.desktopMode=false, required this.dealDiscount})
+      this.orderNow = false,
+      this.desktopMode = false,
+      required this.dealDiscount,
+      required this.productPrice})
       : super(key: key);
 
   @override
@@ -43,6 +46,7 @@ class OrderPage extends StatefulWidget {
   final String dealId;
   final String orderQuantity;
   final String dealDiscount;
+  final String productPrice;
   final bool orderNow;
   final bool desktopMode;
 }
@@ -103,7 +107,7 @@ class _OrderPageState extends State<OrderPage> {
                       // your logic
                     },
                     itemBuilder: (BuildContext context) {
-                      return  [
+                      return [
                         PopupMenuItem(
                           value: 'webview',
                           onTap: () {
@@ -111,37 +115,46 @@ class _OrderPageState extends State<OrderPage> {
                             setState(() {
                               isDesktopMode = !isDesktopMode;
                               // loading = true;
-
                             });
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) =>   OrderPage(
-                              productImage: widget.productImage,
-                              dealDiscount: widget.dealDiscount,
-                              productTitle: widget.productTitle,
-                              productOfferTitle: widget.productOfferTitle,
-                              productOfferText: widget.productOfferText,
-                              productYouSpend: widget.productYouSpend,
-                              productTotalEarn: widget.productTotalEarn,
-                              productCashback: widget.productCashback,
-                              productTotalReceive:
-                              widget.productTotalReceive,
-                              productLink: widget.productLink,
-                              productDealId: widget.productDealId,
-                              dealId: widget.dealId,
-                              orderQuantity: widget.orderQuantity,
-                              orderNow: true,
-                              desktopMode: isDesktopMode,
-                            )));
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        OrderPage(
+                                          productImage: widget.productImage,
+                                          dealDiscount: widget.dealDiscount,
+                                          productTitle: widget.productTitle,
+                                          productPrice: widget.productPrice,
+                                          productOfferTitle:
+                                              widget.productOfferTitle,
+                                          productOfferText:
+                                              widget.productOfferText,
+                                          productYouSpend:
+                                              widget.productYouSpend,
+                                          productTotalEarn:
+                                              widget.productTotalEarn,
+                                          productCashback:
+                                              widget.productCashback,
+                                          productTotalReceive:
+                                              widget.productTotalReceive,
+                                          productLink: widget.productLink,
+                                          productDealId: widget.productDealId,
+                                          dealId: widget.dealId,
+                                          orderQuantity: widget.orderQuantity,
+                                          orderNow: true,
+                                          desktopMode: isDesktopMode,
+                                        )));
                             // loadingTime();
                           },
                           child: Row(
                             children: [
-                          Icon(
-                                  isDesktopMode
-                                      ? Icons.mobile_screen_share
-                                      : Icons.desktop_windows_rounded,
-                                  size: 22,
-                                  color: colorDark,
-                                ),
+                              Icon(
+                                isDesktopMode
+                                    ? Icons.mobile_screen_share
+                                    : Icons.desktop_windows_rounded,
+                                size: 22,
+                                color: colorDark,
+                              ),
                               Text(
                                 isDesktopMode ? "Mobile Mode" : "Desktop Mode",
                                 style: textStyle.subHeadingColorDark,
@@ -172,7 +185,6 @@ class _OrderPageState extends State<OrderPage> {
                             ],
                           ),
                         ),
-
                       ];
                     },
                   ),
@@ -334,11 +346,11 @@ class _OrderPageState extends State<OrderPage> {
                                                     divider(),
                                                     detailsWidgetCard(
                                                         "Discount",
-                                                        "${checkNull(widget.dealDiscount,"0")} $rupeeSign"),
+                                                        "${checkNull(widget.dealDiscount, "0")} $rupeeSign"),
                                                     divider(),
                                                     detailsWidgetCard(
                                                         "Checkout",
-                                                        "${widget.productTotalReceive} $rupeeSign"),
+                                                        "${widget.productPrice} $rupeeSign"),
                                                     divider(),
                                                     detailsWidgetCard("Earn",
                                                         "${widget.productTotalEarn} $rupeeSign"),
@@ -353,7 +365,6 @@ class _OrderPageState extends State<OrderPage> {
                                   ),
                                 ),
                                 SizedBox(
-
                                   width: double.infinity,
                                   child: Card(
                                     // shape: RoundedRectangleBorder(
@@ -421,7 +432,7 @@ class _OrderPageState extends State<OrderPage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     detailsWidget("Phone",
-                                                        "xx-xxxxxxxxxx"),
+                                                        "Your number", false),
                                                     divider(),
                                                     detailsWidget("Pincode",
                                                         HomeApi.orderPincode),
@@ -508,13 +519,19 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                         ),
                         Visibility(
-                          visible: HomeApi.orderGst == "NA" || HomeApi.orderGst == "NIL" || HomeApi.orderGst == "" || HomeApi.orderGst.toString() == "null"   ? false : true,
+                          visible: HomeApi.orderGst == "NA" ||
+                                  HomeApi.orderGst == "NIL" ||
+                                  HomeApi.orderGst == "" ||
+                                  HomeApi.orderGst.toString() == "null"
+                              ? false
+                              : true,
                           child: Padding(
-                            padding: const EdgeInsets.all(constants.defaultPadding/2),
+                            padding: const EdgeInsets.all(
+                                constants.defaultPadding / 2),
                             child: Text(
                               "this is a GST order please copy and paste the gst number",
-                              style:
-                                  textStyle.smallText.copyWith(color: Colors.black,fontSize: 10.sp),
+                              style: textStyle.smallText.copyWith(
+                                  color: Colors.black, fontSize: 10.sp),
                             ),
                           ),
                         ),
@@ -699,10 +716,10 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  Widget detailsWidget(String title, String value) {
+  Widget detailsWidget(String title, String value, [bool copy = true]) {
     return InkWell(
       onTap: () {
-        if (title == " ") {
+        if (title == " " || !copy) {
           return;
         }
         copyToClipboard(context, value);
@@ -722,7 +739,7 @@ class _OrderPageState extends State<OrderPage> {
               maxLines: 1,
             ),
           ),
-          title == " "
+          title == " " || !copy
               ? Container()
               : Image.asset(
                   "images/copyicon.png",
@@ -747,12 +764,12 @@ class _OrderPageState extends State<OrderPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content:PopupMenuButton(
+          content: PopupMenuButton(
             onSelected: (value) {
               // your logic
             },
             itemBuilder: (BuildContext bc) {
-              return  [
+              return [
                 PopupMenuItem(
                   value: '/hello',
                   onTap: () {
@@ -760,31 +777,33 @@ class _OrderPageState extends State<OrderPage> {
                     setState(() {
                       isDesktopMode = !isDesktopMode;
                       // loading = true;
-
                     });
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) =>   OrderPage(
-                      productImage: widget.productImage,
-                      dealDiscount: widget.dealDiscount,
-                      productTitle: widget.productTitle,
-                      productOfferTitle: widget.productOfferTitle,
-                      productOfferText: widget.productOfferText,
-                      productYouSpend: widget.productYouSpend,
-                      productTotalEarn: widget.productTotalEarn,
-                      productCashback: widget.productCashback,
-                      productTotalReceive:
-                      widget.productTotalReceive,
-                      productLink: widget.productLink,
-                      productDealId: widget.productDealId,
-                      dealId: widget.dealId,
-                      orderQuantity: widget.orderQuantity,
-                      orderNow: true,
-                      desktopMode: isDesktopMode,
-                    )));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => OrderPage(
+                                  productImage: widget.productImage,
+                                  dealDiscount: widget.dealDiscount,
+                                  productTitle: widget.productTitle,
+                                  productOfferTitle: widget.productOfferTitle,
+                                  productPrice: widget.productPrice,
+                                  productOfferText: widget.productOfferText,
+                                  productYouSpend: widget.productYouSpend,
+                                  productTotalEarn: widget.productTotalEarn,
+                                  productCashback: widget.productCashback,
+                                  productTotalReceive:
+                                      widget.productTotalReceive,
+                                  productLink: widget.productLink,
+                                  productDealId: widget.productDealId,
+                                  dealId: widget.dealId,
+                                  orderQuantity: widget.orderQuantity,
+                                  orderNow: true,
+                                  desktopMode: isDesktopMode,
+                                )));
                     // loadingTime();
                   },
                   child: Row(
                     children: [
-
                       Text(
                         isDesktopMode ? "Mobile Mode" : "Desktop Mode",
                         style: textStyle.subHeadingColorDark,
@@ -815,11 +834,9 @@ class _OrderPageState extends State<OrderPage> {
                     ],
                   ),
                 ),
-
               ];
             },
           ),
-
 
           // Column(
           //   crossAxisAlignment: CrossAxisAlignment.start,

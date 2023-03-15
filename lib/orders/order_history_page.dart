@@ -84,7 +84,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                 nextPage(
                                     context,
                                     OrderDetailPage(
-                                      dealDiscount: OrderApi.ordersModel!.orders[index].discount,
+                                      dealDiscount: OrderApi
+                                          .ordersModel!.orders[index].discount,
                                       dealerPrice: OrderApi.ordersModel!
                                           .orders[index].dealersPrice,
                                       orderPage: 1,
@@ -93,10 +94,12 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                       productImage: DatabaseApi.imageUrl +
                                           OrderApi.ordersModel!.orders[index]
                                               .dealImage,
+                                      productPrice:
+                                          HomeApi.dealProductPrice[index],
                                       productTitle: OrderApi
                                           .ordersModel!.orders[index].dealTitle,
-                                      productOfferTitle: OrderApi
-                                          .ordersModel!.orders[index].offerTitle,
+                                      productOfferTitle: OrderApi.ordersModel!
+                                          .orders[index].offerTitle,
                                       productOfferText: OrderApi
                                           .ordersModel!.orders[index].offerText,
                                       productYouSpend: OrderApi.ordersModel!
@@ -111,8 +114,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                           .ordersModel!.orders[index].offerLink,
                                       productDealId: OrderApi
                                           .ordersModel!.orders[index].dealerId,
-                                      dealId:
-                                          OrderApi.ordersModel!.orders[index].id,
+                                      dealId: OrderApi
+                                          .ordersModel!.orders[index].id,
                                       orderQuantity: OrderApi.ordersModel!
                                           .orders[index].orderQuantity,
                                     ));
@@ -273,7 +276,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                             height: 111.h,
                                             fit: BoxFit.fill,
                                             // width: 99,
-                                            imageErrorBuilder: imageErrorBuilder,
+                                            imageErrorBuilder:
+                                                imageErrorBuilder,
                                             placeholderFit: BoxFit.none,
                                           ),
                                           const SizedBox(
@@ -288,9 +292,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                   width: 88.w,
                                                   child: Card(
                                                     elevation: 0,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          constants.borderRadius,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius: constants
+                                                          .borderRadius,
                                                       side: BorderSide(
                                                           width: 0.4,
                                                           color: OrderApi
@@ -302,8 +307,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                               : colorSuccess),
                                                     ),
                                                     child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
+                                                      padding: const EdgeInsets.symmetric(
                                                           vertical: constants
                                                                   .defaultPadding /
                                                               8,
@@ -316,18 +320,21 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                                 .center,
                                                         children: [
                                                           Visibility(
-                                                            visible:   OrderApi
-                                                                .ordersModel!
-                                                                .orders[index]
-                                                                .storeOrderId
-                                                                .isEmpty
-                                                                ? false : true,
+                                                            visible: OrderApi
+                                                                    .ordersModel!
+                                                                    .orders[
+                                                                        index]
+                                                                    .storeOrderId
+                                                                    .isEmpty
+                                                                ? false
+                                                                : true,
                                                             child: Icon(
                                                               Icons.verified,
                                                               size: 12,
                                                               color: OrderApi
                                                                       .ordersModel!
-                                                                      .orders[index]
+                                                                      .orders[
+                                                                          index]
                                                                       .storeOrderId
                                                                       .isEmpty
                                                                   ? colorWarning
@@ -342,7 +349,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                           Text(
                                                             OrderApi
                                                                     .ordersModel!
-                                                                    .orders[index]
+                                                                    .orders[
+                                                                        index]
                                                                     .storeOrderId
                                                                     .isEmpty
                                                                 ? "Created"
@@ -434,7 +442,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                         setState(() {});
                                                       },
                                                       controller: OrderApi
-                                                          .controllerList[index],
+                                                              .controllerList[
+                                                          index],
                                                       textAlignVertical:
                                                           TextAlignVertical
                                                               .center,
@@ -442,8 +451,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                       textCapitalization:
                                                           TextCapitalization
                                                               .sentences,
-                                                      decoration: InputDecoration(
-                                                        border: InputBorder.none,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
                                                         hintText:
                                                             "999-999999-999999",
                                                         hintStyle: textStyle
@@ -467,7 +478,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                       : false,
                                                   child: Row(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Expanded(
                                                         child: NewButton(
@@ -488,8 +500,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                               .copyWith(
                                                                   fontSize:
                                                                       14.sp),
-                                                          margin: const EdgeInsets
-                                                              .symmetric(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .symmetric(
                                                             horizontal: constants
                                                                     .defaultPadding /
                                                                 2,
@@ -519,15 +532,14 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                             ).then((value) {
                                                               OrderApi.getOrders(
                                                                       context)
-                                                                  .then((value) {
+                                                                  .then(
+                                                                      (value) {
                                                                 OrderApi
-                                                                    .controllerList.clear();
+                                                                    .controllerList
+                                                                    .clear();
                                                                 for (int i = 0;
                                                                     i <
-                                                                        (OrderApi
-                                                                                .ordersModel
-                                                                                ?.orders
-                                                                                .length ??
+                                                                        (OrderApi.ordersModel?.orders.length ??
                                                                             0);
                                                                     i++) {
                                                                   OrderApi
@@ -536,9 +548,11 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                                           TextEditingController());
                                                                 }
 
-                                                                customPrint("getOrders Refresh :: ${OrderApi.controllerList.length}");
+                                                                customPrint(
+                                                                    "getOrders Refresh :: ${OrderApi.controllerList.length}");
                                                                 setState(() {
-                                                                  loading = false;
+                                                                  loading =
+                                                                      false;
                                                                 });
                                                               });
                                                             });
@@ -585,17 +599,21 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                                       .orders[
                                                                           index]
                                                                       .totalEarnings,
-                                                                  productCashback:
-                                                                      OrderApi
-                                                                          .ordersModel!
-                                                                          .orders[
-                                                                              index]
-                                                                          .cashback,
+                                                                  productCashback: OrderApi
+                                                                      .ordersModel!
+                                                                      .orders[
+                                                                          index]
+                                                                      .cashback,
                                                                   productTotalReceive: OrderApi
                                                                       .ordersModel!
                                                                       .orders[
                                                                           index]
                                                                       .totalYouWillReceive,
+                                                                  productPrice: OrderApi
+                                                                      .ordersModel!
+                                                                      .orders[
+                                                                          index]
+                                                                      .productPrice,
                                                                   productLink: OrderApi
                                                                       .ordersModel!
                                                                       .orders[
@@ -617,10 +635,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                                                           index]
                                                                       .orderQuantity,
                                                                   // orderNow: false,
-                                                                  dealDiscount:OrderApi
+                                                                  dealDiscount: OrderApi
                                                                       .ordersModel!
                                                                       .orders[
-                                                                  index]
+                                                                          index]
                                                                       .discount,
                                                                 ));
                                                           },
@@ -663,20 +681,27 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                         )
                       : Center(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
                               'images/notorder.png',
                               height: 200.h,
-                                width: 200.w,
-                        ),
-                              SizedBox(height: constants.defaultPadding,),
-                              Text("You haven't ordered anything yet",style: textStyle.subHeading,)
-                            ],
-                          )),
+                              width: 200.w,
+                            ),
+                            SizedBox(
+                              height: constants.defaultPadding,
+                            ),
+                            Text(
+                              "You haven't ordered anything yet",
+                              style: textStyle.subHeading,
+                            )
+                          ],
+                        )),
                 ),
-                SizedBox(height: constants.defaultPadding*5,),
+                SizedBox(
+                  height: constants.defaultPadding * 5,
+                ),
               ],
             ),
           ),
@@ -686,21 +711,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   Future<void> _pullRefresh() async {
     await delay(1000);
     OrderApi.getOrders(context).then((value) {
-
-      OrderApi
-          .controllerList.clear();
-      for (int i = 0;
-      i <
-          (OrderApi
-              .ordersModel
-              ?.orders
-              .length ??
-              0);
-      i++) {
-        OrderApi
-            .controllerList
-            .add(
-            TextEditingController());
+      OrderApi.controllerList.clear();
+      for (int i = 0; i < (OrderApi.ordersModel?.orders.length ?? 0); i++) {
+        OrderApi.controllerList.add(TextEditingController());
       }
       setState(() {});
     });

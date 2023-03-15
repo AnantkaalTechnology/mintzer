@@ -10,12 +10,10 @@ import 'package:mintzer/home/deal_page.dart';
 import 'package:mintzer/home/nav_drawer.dart';
 import 'package:mintzer/home/notification_page.dart';
 import 'package:mintzer/home/wallet_page.dart';
-
 // import 'package:mintzer/orders/api.dart';
 import 'package:mintzer/orders/order_history_page.dart';
 import 'package:mintzer/util/constants.dart';
 import 'package:mintzer/util/text_styles.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../Widgets/new_button.dart';
 import '../Widgets/splash_screen.dart';
@@ -304,7 +302,7 @@ class _HomePageState extends State<HomePage> {
               ),
               HomeApi.dealTitle.isEmpty
                   ? Container(
-                height: 500.h,
+                      height: 500.h,
                       child: Center(
                         child: Column(
                           children: [
@@ -352,6 +350,8 @@ class _HomePageState extends State<HomePage> {
                                       dealerPrice: HomeApi.dealerPrice[index],
                                       productImage: HomeApi.dealImage[index],
                                       productTitle: HomeApi.dealTitle[index],
+                                      productPrice:
+                                          HomeApi.dealProductPrice[index],
                                       productOfferTitle:
                                           HomeApi.dealOfferTitle[index],
                                       productOfferText:
@@ -459,6 +459,9 @@ class _HomePageState extends State<HomePage> {
                                                     OrderDetailPage(
                                                       dealerPrice: HomeApi
                                                           .dealerPrice[index],
+                                                      productPrice: HomeApi
+                                                              .dealProductPrice[
+                                                          index],
                                                       productImage: HomeApi
                                                           .dealImage[index],
                                                       productTitle: HomeApi
